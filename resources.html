@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Resources - STEM Society</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&amp;family=Playfair+Display:wght@400;700&amp;family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="styles1.css" rel="stylesheet">
+<style>
+    /* Base styles matching the existing theme */
+    body {
+        background-color: #0D1B2A; /* Dark blue background */
+        color: #E0E1DD; /* Light text for readability */
+        font-family: 'Inter', sans-serif;
+        line-height: 1.6;
+    }
+
+    /* Header styling (reused from other pages) */
+    .w-full.fixed.top-0.z-50.bg-\[\#0a1744\].text-white.shadow-md {
+        background-color: #0a1744;
+    }
+
+    /* Main content padding to account for fixed header */
+    main {
+        padding-top: 80px; /* Adjust based on your header height */
+    }
+
+    /* Resources Page Specific Styles */
+    .resources-page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .resources-page-container h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        color: #E0E1DD;
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .resources-page-container h2::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background-color: #778DA9; /* Accent blue underline */
+        border-radius: 2px;
+    }
+
+    .section-block {
+        background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency */
+        padding: 40px;
+        border-radius: 10px;
+        margin-bottom: 40px;
+        text-align: left;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .section-block:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .section-block h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        color: #778DA9; /* Accent blue for subheadings */
+        margin-bottom: 15px;
+        text-align: center;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    .section-block h3::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background-color: #415A77;
+        border-radius: 1.5px;
+    }
+
+    /* Resource Cards */
+    .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+    }
+    .resource-card {
+        background: rgba(27, 38, 59, 0.9);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    .resource-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+    .resource-card .icon-container {
+        background-color: #415A77;
+        padding: 20px;
+        text-align: center;
+        font-size: 3rem;
+        color: #E0E1DD;
+    }
+    .resource-card-info {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .resource-card-info h4 {
+        font-family: 'Merriweather', serif;
+        font-size: clamp(1.3rem, 2vw, 1.7rem);
+        color: #E0E1DD;
+        margin-bottom: 10px;
+    }
+    .resource-card-info p {
+        font-size: clamp(0.85rem, 1.4vw, 1rem);
+        color: #B0B0B0;
+        margin-bottom: 15px;
+        flex-grow: 1;
+    }
+    .resource-card-info .resource-link {
+        display: inline-block;
+        background: #778DA9;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        align-self: flex-start;
+        margin-top: 15px;
+    }
+    .resource-card-info .resource-link:hover {
+        background: #5D7B9D;
+        transform: translateY(-2px);
+    }
+
+    /* Video Highlights (reused from Gallery) */
+    .video-item {
+        background: rgba(27, 38, 59, 0.9);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative; /* For overlay */
+        cursor: pointer;
+    }
+    .video-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+    .video-item img {
+        width: 100%;
+        height: 220px; /* Fixed height for consistency */
+        object-fit: cover;
+        display: block;
+        filter: brightness(0.8);
+        transition: filter 0.3s ease;
+    }
+    .video-item:hover img {
+        filter: brightness(1);
+    }
+    .video-item-info {
+        padding: 15px;
+        text-align: center;
+    }
+    .video-item-info h4 {
+        font-family: 'Merriweather', serif;
+        font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+        color: #E0E1DD;
+        margin-bottom: 5px;
+    }
+    .video-item-info p {
+        font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+        color: #B0B0B0;
+    }
+
+    /* Video Play Icon Overlay */
+    .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .video-item:hover .video-overlay {
+        opacity: 1;
+    }
+    .video-overlay i {
+        font-size: 3rem;
+        color: white;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .resources-page-container {
+            padding: 30px 15px;
+        }
+        .resources-page-container h2 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin-bottom: 30px;
+        }
+        .section-block {
+            padding: 30px 20px;
+            margin-bottom: 30px;
+        }
+        .section-block h3 {
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+        }
+
+        /* Resource Grid */
+        .resource-grid {
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 20px;
+        }
+        .resource-card-info {
+            padding: 15px;
+        }
+        .resource-card-info h4 {
+            font-size: clamp(1.1rem, 5vw, 1.4rem);
+        }
+        .resource-card-info p {
+            font-size: clamp(0.8rem, 4vw, 0.95rem);
+        }
+        .resource-card-info .resource-link {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+        }
+
+        /* Video Items */
+        .video-item img {
+            height: 180px; /* Adjust height for smaller screens */
+        }
+        .video-item-info {
+            padding: 10px;
+        }
+        .video-item-info h4 {
+            font-size: clamp(1rem, 4.5vw, 1.2rem);
+        }
+        .video-item-info p {
+            font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+        }
+    }
+
+    /* CSS for menu overlay transitions, previously in index.html <style> */
+    .transition-slide {
+        transition: transform 0.5s ease-in-out;
+        transform: translateX(100%); /* Start off-screen to the right */
+    }
+
+    .overlay-open {
+        transform: translateX(0); /* Slide in to full view */
+    }
+
+    .overlay-closed {
+        transform: translateX(100%); /* Slide out to the right */
+    }
+</style>
+</link></head>
+<body>
+<!-- Navbar - Reusing structure from index.html -->
+<header class="w-full fixed top-0 z-50 bg-[#0a1744] text-white shadow-md">
+<div class="flex justify-between items-center px-6 py-4">
+<button class="focus:outline-none flex items-center gap-2 text-lg font-semibold" id="menuToggle">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="hidden md:inline">Menu</span>
+</button>
+<h1 class="text-xl font-bold uppercase tracking-wider">STEM Society</h1>
+<img alt="Logo" class="h-10 w-auto" src="Asserts/STEM Logo 1.4.png"/>
+</div>
+</header>
+<!-- Full-Screen Overlay - Reusing structure from index.html -->
+<div class="fixed top-0 left-0 w-full h-full bg-[#0a1744] text-white z-50 transition-slide overlay-closed overflow-hidden pt-16" id="menuOverlay">
+<div class="relative flex flex-col h-full">
+<!-- Top Bar Inside Overlay -->
+<div class="flex justify-between items-center px-6 py-4 border-b border-white/20 z-10 relative">
+<button class="flex items-center gap-2 text-lg font-semibold" id="closeMenu">
+<span class="text-2xl">✕</span> Close
+        </button>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="font-semibold">Search</span>
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Background Logo -->
+<div class="absolute bottom-24 right-6 z-0 opacity-10">
+<img alt="Seal Logo" class="w-48 md:w-64 h-auto" src="Asserts/STEM Logo 1.4.png"/>
+</div>
+<!-- Main Content -->
+<div class="flex flex-col md:flex-row flex-grow px-6 py-4 gap-8 relative z-10 overflow-y-auto">
+<!-- Left Menu Titles -->
+<div class="w-full md:w-1/3 border-r border-white/20">
+<ul class="space-y-3 font-bold text-lg uppercase">
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="index.html" class="block">Home</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="about.html" class="block">About us</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="team.html" class="block">Administration</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="events.html" class="block">Events</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="projects.html" class="block">Projects</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="blog.html" class="block">Blog / Articles</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="achievements.html" class="block">Achievements</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="gallery.html" class="block">Gallery</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="festival.html" class="block">National STEM Festival</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="contact.html" class="block">Contact</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="donate.html" class="block">Donate</a></li>
+<li class="bg-white bg-opacity-20 p-3 rounded">Resources</li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="forum.html" class="block">Forum / Community</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="quiz.html" class="block">STEM Quiz</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="memes.html" class="block">STEM Memes</a></li>
+</ul>
+</div>
+<!-- Right Submenu -->
+<div class="w-full md:w-2/3 mt-4 md:mt-0 space-y-4 text-lg">
+</div>
+</div>
+<!-- Social Media Links -->
+<div class="socials flex justify-end items-center gap-6 text-2xl px-6 py-4 border-t border-white/20 z-10 relative">
+<div class="button-panel flex gap-6">
+<a class="fa fa-facebook hover:text-gray-300" href="#" title="Facebook"></a>
+<a class="fa fa-youtube hover:text-gray-300" href="#" title="YouTube"></a>
+<a class="fa fa-instagram hover:text-gray-300" href="#" title="Instagram"></a>
+<a class="fa fa-twitter hover:text-gray-300" href="#" title="Twitter"></a>
+<a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+</div>
+</div>
+</div>
+</div>
+
+<main>
+<section class="resources-page-container">
+<h2>STEM Resources</h2>
+<p class="text-center text-lg text-gray-400 mb-10">Access a curated collection of valuable resources to support your learning journey in STEM.</p>
+
+<!-- eBooks & Notes -->
+<div class="section-block">
+<h3>eBooks & Notes</h3>
+<p class="text-gray-400 mb-8">Download comprehensive study materials, lecture notes, and insightful eBooks across various STEM disciplines.</p>
+<div class="resource-grid">
+    <div class="resource-card">
+        <div class="icon-container"><i class="fas fa-book"></i></div>
+        <div class="resource-card-info">
+            <h4>Introduction to Quantum Physics</h4>
+            <p>A beginner-friendly guide to the fascinating world of quantum mechanics.</p>
+            <a href="#" class="resource-link">Download PDF</a>
+        </div>
+    </div>
+    <div class="resource-card">
+        <div class="icon-container"><i class="fas fa-file-alt"></i></div>
+        <div class="resource-card-info">
+            <h4>Advanced Calculus Lecture Notes</h4>
+            <p>Detailed notes covering multivariate calculus and differential equations.</p>
+            <a href="#" class="resource-link">Download PDF</a>
+        </div>
+    </div>
+    <div class="resource-card">
+        <div class="icon-container"><i class="fas fa-book-open"></i></div>
+        <div class="resource-card-info">
+            <h4>Robotics & AI Fundamentals eBook</h4>
+            <p>An essential read for understanding the basics of robotics and artificial intelligence.</p>
+            <a href="#" class="resource-link">Download PDF</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Coding Links & Tutorials -->
+<div class="section-block">
+<h3>Coding Links & Tutorials</h3>
+<p class="text-gray-400 mb-8">Explore external links to coding platforms, interactive tutorials, and open-source projects.</p>
+<div class="resource-grid">
+    <div class="resource-card">
+        <div class="icon-container"><i class="fas fa-code"></i></div>
+        <div class="resource-card-info">
+            <h4>Codecademy: Learn to Code</h4>
+            <p>Interactive lessons for Python, JavaScript, HTML/CSS, and more.</p>
+            <a href="https://www.codecademy.com/" target="_blank" class="resource-link">Visit Website</a>
+        </div>
+    </div>
+    <div class="resource-card">
+        <div class="icon-container"><i class="fas fa-laptop-code"></i></div>
+        <div class="resource-card-info">
+            <h4>FreeCodeCamp: Web Development</h4>
+            <p>Comprehensive curriculum for web development, including certifications.</p>
+            <a href="https://www.freecodecamp.org/" target="_blank" class="resource-link">Visit Website</a>
+        </div>
+    </div>
+    <div class="resource-card">
+        <div class="icon-container"><i class="fab fa-github"></i></div>
+        <div class="resource-card-info">
+            <h4>GitHub: Explore Open Source</h4>
+            <p>Discover and contribute to millions of open-source projects.</p>
+            <a href="https://github.com/" target="_blank" class="resource-link">Visit GitHub</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Research Papers -->
+<div class="section-block">
+<h3>Research Papers</h3>
+<p class="text-gray-400 mb-8">Access a selection of influential research papers and academic publications from our community and beyond.</p>
+<div class="resource-grid">
+    <div class="resource-card">
+        <div class="icon-container"><i class="fas fa-file-pdf"></i></div>
+        <div class="resource-card-info">
+            <h4>AI in Drug Discovery: A Review</h4>
+            <p>A recent paper on the application of AI in accelerating pharmaceutical research.</p>
+            <a href="#" class="resource-link">Read Paper</a>
+        </div>
+    </div>
+    <div class="resource-card">
+        <div class="icon-container"><i class="fas fa-file-pdf"></i></div>
+        <div class="resource-card-info">
+            <h4>Blockchain for Supply Chain Optimization</h4>
+            <p>Exploring decentralized ledger technologies for enhanced supply chain transparency.</p>
+            <a href="#" class="resource-link">Read Paper</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Video Highlights -->
+<div class="section-block">
+<h3>Video Highlights</h3>
+<p class="text-gray-400 mb-8">Watch educational videos, tutorials, and recorded talks from STEM experts.</p>
+<div class="resource-grid">
+    <div class="video-item">
+        <img src="https://placehold.co/600x400/0D1B2A/FFFFFF?text=Physics+Video" alt="Physics Concepts Video">
+        <div class="video-overlay">
+            <i class="fas fa-play-circle"></i>
+        </div>
+        <div class="video-item-info">
+            <h4>Understanding Relativity: Crash Course</h4>
+            <p>An animated explanation of Einstein's theories.</p>
+        </div>
+        <a href="https://www.youtube.com/embed/your-video-id-1" target="_blank" class="absolute inset-0 z-20"></a>
+    </div>
+    <div class="video-item">
+        <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Chemistry+Video" alt="Chemistry Lab Video">
+        <div class="video-overlay">
+            <i class="fas fa-play-circle"></i>
+        </div>
+        <div class="video-item-info">
+            <h4>Chemistry Lab Safety Essentials</h4>
+            <p>Key safety protocols for any science experiment.</p>
+        </div>
+        <a href="https://www.youtube.com/embed/your-video-id-2" target="_blank" class="absolute inset-0 z-20"></a>
+    </div>
+    <div class="video-item">
+        <img src="https://placehold.co/600x400/415A77/FFFFFF?text=Engineering+Video" alt="Engineering Principles Video">
+        <div class="video-overlay">
+            <i class="fas fa-play-circle"></i>
+        </div>
+        <div class="video-item-info">
+            <h4>Basic Engineering Principles Explained</h4>
+            <p>Foundational concepts for aspiring engineers.</p>
+        </div>
+        <a href="https://www.youtube.com/embed/your-video-id-3" target="_blank" class="absolute inset-0 z-20"></a>
+    </div>
+</div>
+</div>
+
+</section>
+</main>
+
+<!-- Footer - Reusing structure from index.html -->
+<footer class="footer">
+<div class="footer-content">
+<div class="footer-section">
+<h3>STEM Society</h3>
+<p>Fostering innovation and excellence in Science, Technology, Engineering, and Mathematics.</p>
+</div>
+<div class="footer-section">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="index.html" class="hover:text-gray-300 transition-colors">Home</a></li>
+<li><a href="about.html" class="hover:text-gray-300 transition-colors">About Us</a></li>
+<li><a href="events.html" class="hover:text-gray-300 transition-colors">Events</a></li>
+<li><a href="projects.html" class="hover:text-gray-300 transition-colors">Projects</a></li>
+<li><a href="blog.html" class="hover:text-gray-300 transition-colors">Blog / Articles</a></li>
+<li><a href="achievements.html" class="hover:text-gray-300 transition-colors">Achievements</a></li>
+<li><a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a></li>
+<li><a href="festival.html" class="hover:text-gray-300 transition-colors">National STEM Festival</a></li>
+<li><a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a></li>
+<li><a href="donate.html" class="hover:text-gray-300 transition-colors">Donate</a></li>
+<li><a href="resources.html" class="hover:text-gray-300 transition-colors">Resources</a></li>
+<li><a href="forum.html" class="hover:text-gray-300 transition-colors">Forum / Community</a></li>
+<li><a href="quiz.html" class="hover:text-gray-300 transition-colors">STEM Quiz</a></li>
+<li><a href="memes.html" class="hover:text-gray-300 transition-colors">STEM Memes</a></li>
+</ul>
+</div>
+<div class="footer-section">
+<h3>Contact Us</h3>
+<p>Email: info@stemsociety.org</p>
+<p>Phone: +1 (123) 456-7890</p>
+<div class="socials mt-4 text-xl">
+<a class="fa fa-facebook hover:text-gray-300 mr-4" href="#" title="Facebook"></a>
+<a class="fa fa-youtube hover:text-gray-300 mr-4" href="#" title="YouTube"></a>
+<a class="fa fa-instagram hover:text-gray-300 mr-4" href="#" title="Instagram"></a>
+<a class="fa fa-twitter hover:text-gray-300 mr-4" href="#" title="Twitter"></a>
+<a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+</div>
+</div>
+</div>
+<div class="text-center mt-8 pt-8 border-t border-white/10">
+<p>&copy; 2024 STEM Society. All rights reserved.</p>
+</div>
+</footer>
+
+<script>
+  // Reusing the menu toggle functionality from index.html
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const closeMenu = document.getElementById('closeMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    menuToggle.addEventListener('click', () => {
+      menuOverlay.classList.remove('overlay-closed');
+      menuOverlay.classList.add('overlay-open');
+    });
+
+    closeMenu.addEventListener('click', () => {
+      menuOverlay.classList.remove('overlay-open');
+      menuOverlay.classList.add('overlay-closed');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        menuOverlay.classList.remove('overlay-open');
+        menuOverlay.classList.add('overlay-closed');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

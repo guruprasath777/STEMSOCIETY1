@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Achievements - STEM Society</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&amp;family=Playfair+Display:wght@400;700&amp;family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="styles1.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* General Body and Font Styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #0A1128; /* Dark Blue - Main Theme */
+            color: #FFFFFF; /* White for general text */
+        }
+
+        /* Navbar and Overlay Styles */
+        header {
+            background-color: #0A1128; /* Dark Blue Navbar background */
+        }
+        #menuOverlay {
+            background-color: #0A1128; /* Dark Blue Overlay background */
+        }
+        .transition-slide {
+            transition: transform 0.5s ease-in-out;
+        }
+        .overlay-closed {
+            transform: translateX(100%);
+        }
+        .overlay-open {
+            transform: translateX(0);
+        }
+        .desktop-navbar-text {
+            display: none;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-left: 20px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            flex-grow: 1;
+            text-align: center;
+        }
+        @media (min-width: 1024px) {
+            .desktop-navbar-text {
+                display: block;
+            }
+        }
+
+        /* Styles for menu links inside the overlay */
+        .menu-link {
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent li/p */
+            transition: color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .menu-link:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+
+        /* Achievements Page Specific Styles */
+        .achievements-page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .achievements-page-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: #FFFFFF; /* Changed to white for consistency with aboutus.html */
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .achievements-page-container h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #DC143C; /* Changed to red accent */
+            border-radius: 2px;
+        }
+
+        .section-block {
+            background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency */
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .section-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: #DC143C; /* Changed to red accent */
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-block h3::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #B20C2D; /* Darker red */
+            border-radius: 1.5px;
+        }
+
+        /* Achievement Cards */
+        .achievement-card {
+            background: rgba(27, 38, 59, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        }
+        .achievement-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        .achievement-card img {
+            width: 100%;
+            height: 180px; /* Fixed height for consistency */
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.8);
+            transition: filter 0.3s ease;
+        }
+        .achievement-card:hover img {
+            filter: brightness(1);
+        }
+        .achievement-card-info {
+            padding: 20px;
+            flex-grow: 1; /* Allows info section to take available space */
+            display: flex;
+            flex-direction: column;
+        }
+        .achievement-card-info h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.3rem, 2vw, 1.7rem);
+            color: #FFFFFF; /* Changed to white */
+            margin-bottom: 10px;
+        }
+        .achievement-card-info p {
+            font-size: clamp(0.85rem, 1.4vw, 1rem);
+            color: #E0E0E0; /* Changed to slightly off-white */
+            margin-bottom: 15px;
+            flex-grow: 1; /* Allows description to take space */
+        }
+        .achievement-card-info .award-date {
+            font-size: 0.8rem;
+            color: #DC143C; /* Changed to red accent */
+            margin-top: 10px;
+        }
+        .achievement-card-info .view-details-button {
+            display: inline-block;
+            background: #DC143C; /* Changed to red accent */
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            align-self: center; /* Center button */
+            margin-top: 15px;
+        }
+        .achievement-card-info .view-details-button:hover {
+            background: #B20C2D; /* Darker red on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Collaboration Milestones specific styling */
+        .milestone-item {
+            background: rgba(27, 38, 59, 0.9);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .milestone-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        .milestone-item .icon {
+            font-size: 3rem;
+            color: #DC143C; /* Changed to red accent */
+            flex-shrink: 0;
+        }
+        .milestone-item-details h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+            color: #FFFFFF; /* Changed to white */
+            margin-bottom: 5px;
+            text-align: left; /* Override section-block h3 center */
+            padding-bottom: 0;
+        }
+        .milestone-item-details h4::after {
+            display: none; /* Remove underline for milestone heading */
+        }
+        .milestone-item-details p {
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            color: #E0E0E0; /* Changed to slightly off-white */
+        }
+
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .achievements-page-container {
+                padding: 30px 15px;
+            }
+            .achievements-page-container h2 {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+                margin-bottom: 30px;
+            }
+            .section-block {
+                padding: 30px 20px;
+                margin-bottom: 30px;
+            }
+            .section-block h3 {
+                font-size: clamp(1.6rem, 6vw, 2.2rem);
+            }
+
+            /* Achievement Cards Grid */
+            .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 20px;
+            }
+            .achievement-card img {
+                height: 160px; /* Slightly smaller image height on mobile */
+            }
+            .achievement-card-info {
+                padding: 15px;
+            }
+            .achievement-card-info h4 {
+                font-size: clamp(1.1rem, 5vw, 1.4rem);
+            }
+            .achievement-card-info p {
+                font-size: clamp(0.8rem, 4vw, 0.95rem);
+            }
+            .achievement-card-info .view-details-button {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+
+            /* Collaboration Milestones Mobile */
+            .milestone-item {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            .milestone-item .icon {
+                margin-bottom: 10px;
+            }
+            .milestone-item-details h4,
+            .milestone-item-details p {
+                text-align: center;
+            }
+        }
+
+        /* Scroll to Top Button Styles */
+        .scroll-to-top-btn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position */
+            bottom: 30px; /* 30px from the bottom */
+            right: 30px; /* 30px from the right */
+            z-index: 99; /* Ensure it's above other content */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: #DC143C; /* Red background (consistent with your theme) */
+            color: white; /* White text/icon */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 50%; /* Make it circular */
+            font-size: 1.5em; /* Icon size */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.5s ease; /* Smooth transitions */
+            opacity: 0; /* Start fully transparent */
+        }
+
+        .scroll-to-top-btn:hover {
+            background-color: #B20C2D; /* Darker red on hover */
+            transform: translateY(-3px); /* Slight lift on hover */
+        }
+
+        /* Class to make the button visible */
+        .scroll-to-top-btn.show {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-to-top-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="w-full fixed top-0 z-50 bg-[#0A1128] text-white shadow-md">
+    <div class="flex justify-between items-center px-6 py-4">
+        <button class="focus:outline-none flex items-center gap-2 text-lg font-semibold" id="menuToggle">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="hidden md:inline">Menu</span>
+        </button>
+        <h2 class="desktop-navbar-text hidden lg:block">AMERICAN NATIONAL COLLEGE</h2>
+        <h1 class="text-xl font-bold uppercase tracking-wider md:block">STEM Society</h1>
+
+        <img alt="Logo" class="h-10 w-auto" src="Asserts/STEM Logo 1.4.png"/>
+    </div>
+</header>
+
+<div class="fixed top-0 left-0 w-full h-full bg-[#0A1128] text-white z-50 transition-slide overlay-closed overflow-hidden pt-16" id="menuOverlay">
+    <div class="relative flex flex-col h-full">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-white/20 z-10 relative">
+            <button class="flex items-center gap-2 text-lg font-semibold" id="closeMenu">
+                <span class="text-2xl">✕</span> Close
+            </button>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold">Search</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-24 right-6 z-0 opacity-10">
+            <img alt="Seal Logo" class="w-48 md:w-64 h-auto" src="Asserts/STEM Logo 1.4.png"/>
+        </div>
+
+        <div class="flex flex-col md:flex-row flex-grow px-6 py-4 gap-8 relative z-10 overflow-y-auto">
+            <div class="w-full md:w-1/3 border-r border-white/20">
+                <ul class="space-y-3 font-bold text-lg uppercase">
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="index3.html">Home</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="aboutus.html">About us</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="team.html">Administration</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="event.html">Events</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="project.html">Projects</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="gallery.html">Gallery</a></li>
+                </ul>
+            </div>
+            <div class="w-full md:w-2/3 mt-4 md:mt-0 space-y-4 text-lg">
+                <p><a class="menu-link" href="blogandarticles.html">Articles</a></p>
+                <p><a class="menu-link" href="achievements.html">Achievements</a></p>
+                <p><a class="menu-link" href="festival.html">National Stem Festival</a></p>
+                <p><a class="menu-link" href="contact.html">Contact</a></p>
+                <p><a class="menu-link" href="donate.html">Donate</a></p>
+            </div>
+        </div>
+
+        <div class="socials flex justify-end items-center gap-6 text-2xl px-6 py-4 border-t border-white/20 z-10 relative">
+            <div class="button-panel flex gap-6">
+                <a class="fa fa-facebook hover:text-gray-300" href="#" title="Facebook"></a>
+                <a class="fa fa-youtube hover:text-gray-300" href="#" title="YouTube"></a>
+                <a class="fa fa-instagram hover:text-gray-300" href="#" title="Instagram"></a>
+                <a class="fa fa-twitter hover:text-gray-300" href="#" title="Twitter"></a>
+                <a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="pt-20">
+<section class="achievements-page-container">
+<h2>Our Achievements</h2>
+<p class="text-center text-lg text-gray-400 mb-10">Celebrating the remarkable accomplishments of our students, faculty, and collaborative efforts.</p>
+
+<div class="section-block">
+<h3>Student & Faculty Awards</h3>
+<p class="text-gray-400 mb-8">Recognizing individual excellence and groundbreaking contributions in various STEM fields.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+    <div class="achievement-card">
+        <img src="https://placehold.co/600x400/0D1B2A/FFFFFF?text=Award+Winner+1" alt="Student Award Winner">
+        <div class="achievement-card-info">
+            <h4>John Doe: Young Innovator Award</h4>
+            <p>Awarded for his pioneering work in sustainable energy solutions, recognized at the National Science Fair.</p>
+            <p class="award-date">Awarded: May 2025</p>
+            <a href="#" class="view-details-button">View Details</a>
+        </div>
+    </div>
+    <div class="achievement-card">
+        <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Award+Winner+2" alt="Faculty Award Winner">
+        <div class="achievement-card-info">
+            <h4>Dr. Sarah Chen: Research Excellence</h4>
+            <p>Honored for her significant contributions to quantum computing research and mentorship.</p>
+            <p class="award-date">Awarded: April 2025</p>
+            <a href="#" class="view-details-button">View Details</a>
+        </div>
+    </div>
+    <div class="achievement-card">
+        <img src="https://placehold.co/600x400/415A77/FFFFFF?text=Award+Winner+3" alt="Student Award Winner">
+        <div class="achievement-card-info">
+            <h4>Emily White: Best Undergraduate Thesis</h4>
+            <p>Recognized for her outstanding thesis on bioinformatics applications in personalized medicine.</p>
+            <p class="award-date">Awarded: June 2025</p>
+            <a href="#" class="view-details-button">View Details</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>Project Wins</h3>
+<p class="text-gray-400 mb-8">Showcasing our projects that have achieved top honors in national and international competitions.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+    <div class="achievement-card">
+        <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Project+Win+1" alt="Project Win: Smart Farming">
+        <div class="achievement-card-info">
+            <h4>Smart Farming System: 1st Place National Tech Expo</h4>
+            <p>Our automated hydroponics system secured the top prize for its innovative approach to sustainable agriculture.</p>
+            <p class="award-date">Awarded: March 2025</p>
+            <a href="#" class="view-details-button">View Project</a>
+        </div>
+    </div>
+    <div class="achievement-card">
+        <img src="https://placehold.co/600x400/415A77/FFFFFF?text=Project+Win+2" alt="Project Win: Medical Robotics">
+        <div class="achievement-card-info">
+            <h4>Medical Robotics Arm: Grand Prize at Global Robotics Challenge</h4>
+            <p>A collaborative project that developed a precision robotic arm for minimally invasive surgeries.</p>
+            <p class="award-date">Awarded: February 2025</p>
+            <a href="#" class="view-details-button">View Project</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>Hackathon & Competition Mentions</h3>
+<p class="text-gray-400 mb-8">Highlights from our participation and victories in various competitive events.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+    <div class="achievement-card">
+        <img src="https://placehold.co/600x400/0D1B2A/FFFFFF?text=Hackathon+1" alt="Hackathon Winner">
+        <div class="achievement-card-info">
+            <h4>Eco-Hack 2025: Winning Team "GreenTech"</h4>
+            <p>Our team developed an AI-powered waste sorting solution, earning them first place in the environmental hackathon.</p>
+            <p class="award-date">Date: April 2025</p>
+            <a href="#" class="view-details-button">Learn More</a>
+        </div>
+    </div>
+    <div class="achievement-card">
+        <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Competition+2" alt="Coding Competition">
+        <div class="achievement-card-info">
+            <h4>National Coding Olympiad: Top 10 Finish</h4>
+            <p>Two of our students placed in the top 10 at the prestigious National Coding Olympiad, showcasing exceptional algorithmic skills.</p>
+            <p class="award-date">Date: March 2025</p>
+            <a href="#" class="view-details-button">Learn More</a>
+        </div>
+    </div>
+    <div class="achievement-card">
+        <img src="https://placehold.co/600x400/415A77/FFFFFF?text=Robotics+Comp" alt="Robotics Competition">
+        <div class="achievement-card-info">
+            <h4>Inter-University Robotics Challenge: Innovation Award</h4>
+            <p>Our robotics team received the Innovation Award for their unique drone design in the annual challenge.</p>
+            <p class="award-date">Date: November 2024</p>
+            <a href="#" class="view-details-button">Learn More</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>Collaboration Milestones</h3>
+<p class="text-gray-400 mb-8">Key partnerships and collaborative projects that have expanded our impact and reach.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+    <div class="milestone-item">
+        <i class="fas fa-handshake icon"></i>
+        <div class="milestone-item-details">
+            <h4>Partnership with TechCorp Innovations</h4>
+            <p>Established a strategic partnership to offer internships and joint research opportunities for our members.</p>
+            <p class="award-date">Date: January 2025</p>
+        </div>
+    </div>
+    <div class="milestone-item">
+        <i class="fas fa-globe icon"></i>
+        <div class="milestone-item-details">
+            <h4>International Exchange Program with Global University</h4>
+            <p>Launched an exchange program fostering cross-cultural learning and research collaboration with a leading international university.</p>
+            <p class="award-date">Date: October 2024</p>
+        </div>
+    </div>
+    <div class="milestone-item">
+        <i class="fas fa-city icon"></i>
+        <div class="milestone-item-details">
+            <h4>Smart City Project with City Council</h4>
+            <p>Collaborated with the local city council on the development of smart infrastructure solutions for urban sustainability.</p>
+            <p class="award-date">Date: August 2024</p>
+        </div>
+    </div>
+</div>
+</div>
+
+</section>
+</main>
+
+<footer>
+    <div class="ftr-box">
+        <div class="content-box1">
+            <div class="c-box-1">
+                <p class="c-heading">OUR PORTFOLIO</p>
+                <a href="#"><p>About Us</p></a>
+                <a href="#"><p>Administration</p></a>
+                <a href="#"><p>Events</p></a>
+                <a href="#"><p>Projects</p></a>
+            </div>
+            <div class="c-box-2">
+                <p class="c-heading">LEARN ABOUT US</p>
+                <a href="#"><p>Blog / Articles</p></a>
+                <a href="#"><p>Gallery</p></a>
+                <a href="#"><p>Achievements</p></a>
+            </div>
+            <div class="c-box-3">
+                <p class="c-heading">JOIN THE JOURNEY</p>
+                <a href="#"><p>Join Us</p></a>
+                <a href="#"><p>Contact</p></a>
+                <a href="#"><p>Sign Up</p></a>
+            </div>
+            <div class="c-box-4">
+                <p class="c-heading">GIVE</p>
+                <a href="#"><p>Donate</p></a>
+            </div>
+        </div>
+
+        <hr style="background-color: white; border: none; height: 1px;" />
+
+        <div class="content-box2">
+            <div class="add-info">
+                <div class="logo">
+                    <img class="ftr-logo" src="Asserts/STEM Logo 1.4.png" alt="STEM Society logo" />
+                </div>
+                <div class="logo-tagline">
+                    <p>Empowering Future Innovators</p>
+                    <p>One Project at a Time</p>
+                </div>
+                <div class="add-links">
+                    <p style="padding-top: 20px;">
+                        <a href="#">Account Center</a> •
+                        <a href="#">Contact Us</a> •
+                        <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+                <div class="tiny-text">
+                    <p>© 2025 STEM Society. All rights reserved.</p>
+                </div>
+            </div>
+
+            <div class="socials">
+                <div class="button-panel">
+                    <a class="fa fa-facebook" href="#" title="Facebook"></a>
+                    <a class="fa fa-youtube" href="#" title="YouTube"></a>
+                    <a class="fa fa-instagram" href="#" title="Instagram"></a>
+                    <a class="fa fa-twitter" href="#" title="Twitter"></a>
+                    <a class="fa fa-linkedin" href="#" title="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button id="scrollToTopBtn" class="scroll-to-top-btn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Navbar functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const closeMenu = document.getElementById('closeMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        if (menuToggle && closeMenu && menuOverlay) {
+            menuToggle.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-closed');
+                menuOverlay.classList.add('overlay-open');
+            });
+
+            closeMenu.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-open');
+                menuOverlay.classList.add('overlay-closed');
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuOverlay.classList.remove('overlay-open');
+                    menuOverlay.classList.add('overlay-closed');
+                }
+            });
+        }
+
+        // Scroll to Top Button Functionality
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        };
+
+        // When the user clicks on the button, scroll to the top of the document
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll animation
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

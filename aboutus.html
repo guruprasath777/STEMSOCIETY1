@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>About Us - STEM Society</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="styles1.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* General Body and Font Styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #0A1128; /* Dark Blue - Main Theme */
+            color: #FFFFFF; /* White for general text */
+        }
+
+        /* Navbar and Overlay Styles */
+        header {
+            background-color: #0A1128; /* Dark Blue Navbar background */
+        }
+        #menuOverlay {
+            background-color: #0A1128; /* Dark Blue Overlay background */
+        }
+        .transition-slide {
+            transition: transform 0.5s ease-in-out;
+        }
+        .overlay-closed {
+            transform: translateX(100%);
+        }
+        .overlay-open {
+            transform: translateX(0);
+        }
+        .desktop-navbar-text {
+            display: none;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-left: 20px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            flex-grow: 1;
+            text-align: center;
+        }
+        @media (min-width: 1024px) {
+            .desktop-navbar-text {
+                display: block;
+            }
+        }
+
+        /* Styles for menu links inside the overlay */
+        .menu-link {
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent li/p */
+            transition: color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .menu-link:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+
+        /* About Us Page Specific Styles */
+        .about-section {
+            padding: 80px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .about-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: #FFFFFF; /* White heading */
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .about-section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: #DC143C; /* Red accent underline */
+            border-radius: 2px;
+        }
+        .about-section p {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            margin-bottom: 25px;
+            color: #E0E0E0; /* Slightly off-white for body text */
+        }
+        .section-block {
+            background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency */
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .section-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        .section-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: #DC143C; /* Red for subheadings */
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-block h3::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #B20C2D; /* Darker red */
+            border-radius: 1.5px;
+        }
+        .section-block ul {
+            list-style: none;
+            padding: 0;
+        }
+        .section-block ul li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+            color: #E0E0E0;
+        }
+        .section-block ul li::before {
+            content: '\2022'; /* Bullet point */
+            color: #DC143C; /* Red bullet */
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+            position: absolute;
+            left: 0;
+        }
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #415A77; /* Blue timeline line */
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            box-sizing: border-box;
+        }
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background-color: #DC143C; /* Red dot */
+            border: 4px solid #0A1128; /* Dark Blue border to match background */
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-item.left {
+            left: 0;
+        }
+        .timeline-item.right {
+            left: 50%;
+        }
+        .timeline-item.right::after {
+            left: -16px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: rgba(27, 38, 59, 0.9);
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .timeline-content:hover {
+            background-color: rgba(41, 60, 90, 0.9);
+            transform: translateY(-3px);
+        }
+        .timeline-content h4 {
+            font-family: 'Merriweather', serif;
+            color: #FFFFFF;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        .timeline-content p {
+            font-size: 0.95rem;
+            color: #E0E0E0;
+        }
+        .faculty-card {
+            background: rgba(27, 38, 59, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .faculty-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        .faculty-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #DC143C; /* Red border */
+        }
+        .faculty-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #FFFFFF;
+            margin-bottom: 5px;
+        }
+        .faculty-card p {
+            font-size: 1rem;
+            color: #E0E0E0;
+            margin-bottom: 10px;
+        }
+        .faculty-card .social-links a {
+            color: #DC143C; /* Red for social links */
+            margin: 0 8px;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        .faculty-card .social-links a:hover {
+            color: white;
+        }
+
+        /* How to Get Involved buttons */
+        .how-to-get-involved .bg-white.bg-opacity-10 {
+            background: rgba(27, 38, 59, 0.8); /* Match section block background */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .how-to-get-involved .bg-white.bg-opacity-10:hover {
+            background: rgba(41, 60, 90, 0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+        .how-to-get-involved i {
+            color: #DC143C; /* Red for icons */
+        }
+        .how-to-get-involved .inline-block {
+            background-color: #DC143C; /* Red button */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .how-to-get-involved .inline-block:hover {
+            background-color: #B20C2D; /* Darker red on hover */
+        }
+
+        /* Collaborations & Partners */
+        .collaborations-partners img {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+        .collaborations-partners img:hover {
+            filter: grayscale(0%);
+        }
+        .collaborations-partners a {
+            color: #DC143C; /* Red link */
+        }
+        .collaborations-partners a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #0A1128; /* Dark blue background */
+            color: #E0E0E0; /* Light gray text */
+            font-family: 'Inter', sans-serif;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+        .ftr-box {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content-box1 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+        .content-box1 .c-heading {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .content-box1 a {
+            text-decoration: none;
+            color: #E0E0E0;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        .content-box1 a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box1 a p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+        hr {
+            background-color: #3C4B6F; /* A lighter shade of blue for the separator */
+            border: none;
+            height: 1px;
+            margin: 30px 0;
+        }
+        .content-box2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            gap: 20px;
+        }
+        .content-box2 .add-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            flex-grow: 1;
+            min-width: 280px;
+        }
+        .content-box2 .logo img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .content-box2 .logo-tagline p {
+            font-size: 1em;
+            margin: 0;
+            line-height: 1.4;
+            color: #FFFFFF;
+        }
+        .content-box2 .add-links {
+            margin-top: 15px;
+        }
+        .content-box2 .add-links a {
+            color: #778DA9; /* Muted blue for additional links */
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+        .content-box2 .add-links a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box2 .tiny-text {
+            margin-top: 15px;
+        }
+        .content-box2 .tiny-text p {
+            font-size: 0.8em;
+            color: #A9B3C7;
+            margin: 0;
+        }
+        .socials {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .socials .button-panel {
+            display: flex;
+            gap: 15px;
+        }
+        .socials .fa {
+            color: #FFFFFF;
+            font-size: 1.8em;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .socials .fa:hover {
+            color: #DC143C; /* Red on hover */
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .about-section {
+                padding: 50px 20px;
+            }
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-item::after {
+                left: 24px;
+            }
+            .timeline-item.right {
+                left: 0%;
+            }
+            .timeline-item.right::after {
+                left: 24px;
+            }
+            .section-block {
+                padding: 30px 20px;
+            }
+            .content-box1 {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                text-align: center;
+            }
+            .content-box1 .c-box-1, .c-box-2, .c-box-3, .c-box-4 {
+                align-items: center;
+            }
+            .content-box2 {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .content-box2 .add-info {
+                align-items: center;
+                text-align: center;
+            }
+            .socials {
+                justify-content: center;
+                margin-top: 20px;
+            }
+        }
+
+        /* Scroll to Top Button Styles */
+        .scroll-to-top-btn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position */
+            bottom: 30px; /* 30px from the bottom */
+            right: 30px; /* 30px from the right */
+            z-index: 99; /* Ensure it's above other content */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: #DC143C; /* Red background (consistent with your theme) */
+            color: white; /* White text/icon */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 50%; /* Make it circular */
+            font-size: 1.5em; /* Icon size */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.5s ease; /* Smooth transitions */
+            opacity: 0; /* Start fully transparent */
+        }
+
+        .scroll-to-top-btn:hover {
+            background-color: #B20C2D; /* Darker red on hover */
+            transform: translateY(-3px); /* Slight lift on hover */
+        }
+
+        /* Class to make the button visible */
+        .scroll-to-top-btn.show {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-to-top-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</link></head>
+<body>
+<header class="w-full fixed top-0 z-50 bg-[#0A1128] text-white shadow-md">
+    <div class="flex justify-between items-center px-6 py-4">
+        <button class="focus:outline-none flex items-center gap-2 text-lg font-semibold" id="menuToggle">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="hidden md:inline">Menu</span>
+        </button>
+        <h2 class="desktop-navbar-text hidden lg:block">AMERICAN NATIONAL COLLEGE</h2>
+        <h1 class="text-xl font-bold uppercase tracking-wider md:block">STEM Society</h1>
+
+        <img alt="Logo" class="h-10 w-auto" src="Asserts/STEM Logo 1.4.png"/>
+    </div>
+</header>
+
+<div class="fixed top-0 left-0 w-full h-full bg-[#0A1128] text-white z-50 transition-slide overlay-closed overflow-hidden pt-16" id="menuOverlay">
+    <div class="relative flex flex-col h-full">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-white/20 z-10 relative">
+            <button class="flex items-center gap-2 text-lg font-semibold" id="closeMenu">
+                <span class="text-2xl">✕</span> Close
+            </button>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold">Search</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-24 right-6 z-0 opacity-10">
+            <img alt="Seal Logo" class="w-48 md:w-64 h-auto" src="Asserts/STEM Logo 1.4.png"/>
+        </div>
+
+        <div class="flex flex-col md:flex-row flex-grow px-6 py-4 gap-8 relative z-10 overflow-y-auto">
+            <div class="w-full md:w-1/3 border-r border-white/20">
+                <ul class="space-y-3 font-bold text-lg uppercase">
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="index3.html">Home</a></li>
+                    <li class="bg-white bg-opacity-20 p-3 rounded cursor-pointer"><a class="menu-link" href="aboutus.html">About us</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="team.html">Administration</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="event.html">Events</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="project.html">Projects</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="gallery.html">Gallery</a></li>
+                </ul>
+            </div>
+            <div class="w-full md:w-2/3 mt-4 md:mt-0 space-y-4 text-lg">
+                <p><a class="menu-link" href="blogandarticles.html">Articles</a></p>
+                <p><a class="menu-link" href="achievements.html">Achievements</a></p>
+                <p><a class="menu-link" href="festival.html">National Stem Festival</a></p>
+                <p><a class="menu-link" href="contact.html">Contact</a></p>
+                <p><a class="menu-link" href="donate.html">Donate</a></p>
+            </div>
+        </div>
+
+        <div class="socials flex justify-end items-center gap-6 text-2xl px-6 py-4 border-t border-white/20 z-10 relative">
+            <div class="button-panel flex gap-6">
+                <a class="fa fa-facebook hover:text-gray-300" href="#" title="Facebook"></a>
+                <a class="fa fa-youtube hover:text-gray-300" href="#" title="YouTube"></a>
+                <a class="fa fa-instagram hover:text-gray-300" href="#" title="Instagram"></a>
+                <a class="fa fa-twitter hover:text-gray-300" href="#" title="Twitter"></a>
+                <a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="pt-20">
+<section class="about-section">
+<h2>About Us</h2>
+<p>Discover the passion and purpose behind the STEM Society. We are dedicated to fostering innovation, education, and community in the fields of Science, Technology, Engineering, and Mathematics. Our journey is built on a commitment to empowering the next generation of leaders and problem-solvers. This page outlines our core values, history, and how you can become a part of our thriving community.</p>
+
+<div class="section-block">
+<h3>Who We Are</h3>
+<p>The STEM Society is a dynamic community of students, educators, and professionals passionate about advancing knowledge and practical application in Science, Technology, Engineering, and Mathematics. We are a collaborative hub that encourages interdisciplinary learning, critical thinking, and real-world problem-solving. Our members range from aspiring young scientists to seasoned faculty, all united by a common goal: to explore, innovate, and inspire.</p>
+</div>
+
+<div class="section-block">
+<h3>Our Vision & Mission</h3>
+<ul>
+<li><strong>Vision:</strong> To be a leading force in STEM education and innovation, inspiring a future generation of diverse and creative minds to address global challenges through scientific inquiry and technological advancement.</li>
+<li><strong>Mission:</strong> To provide an inclusive and engaging platform for STEM enthusiasts to collaborate, learn, and grow. We aim to foster a culture of curiosity, critical thinking, and practical application through workshops, projects, competitions, and community outreach, while promoting ethical responsibility and sustainability in all STEM endeavors.</li>
+</ul>
+</div>
+
+<div class="section-block">
+<h3>Our Journey / History</h3>
+<p>Founded in 2018, the STEM Society began as a small initiative by a group of dedicated students and faculty who envisioned a more connected and vibrant STEM community within our institution. Over the years, we have grown significantly, expanding our programs, increasing our reach, and establishing a strong reputation for excellence. From our humble beginnings, we have consistently strived to provide unparalleled opportunities for our members to engage with cutting-edge science and technology, and to make a tangible impact on the world around them.</p>
+</div>
+
+<div class="section-block">
+<h3>Society Timeline (Interactive Visual)</h3>
+<p>Explore the key milestones in the STEM Society's history. Click on each event for more details.</p>
+<div class="timeline">
+    <div class="timeline-item left">
+        <div class="timeline-content">
+            <h4>2018: Society Founding</h4>
+            <p>The STEM Society was officially established with a core group of members and a vision to promote STEM education.</p>
+        </div>
+    </div>
+    <div class="timeline-item right">
+        <div class="timeline-content">
+            <h4>2019: First Annual STEM Fair</h4>
+            <p>Hosted our inaugural STEM Fair, attracting participants from various schools and colleges, showcasing innovative projects.</p>
+        </div>
+    </div>
+    <div class="timeline-item left">
+        <div class="timeline-content">
+            <h4>2021: Community Outreach Programs Begin</h4>
+            <p>Launched initiatives to engage local schools and communities with hands-on STEM activities.</p>
+        </div>
+    </div>
+    <div class="timeline-item right">
+        <div class="timeline-content">
+            <h4>2023: International Collaboration</h4>
+            <p>Formed partnerships with international organizations, fostering global exchange of ideas and projects.</p>
+        </div>
+    </div>
+    <div class="timeline-item left">
+        <div class="timeline-content">
+            <h4>2025: Grand Robotics Competition Win</h4>
+            <p>Our robotics team secured first place in the National Robotics Championship, a testament to our members' dedication and skill.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>What We Do</h3>
+<p>The STEM Society offers a diverse range of activities and programs designed to enrich the STEM experience for all its members:</p>
+<ul>
+<li><strong>Workshops & Training:</strong> Hands-on sessions covering various topics from coding and robotics to biotechnology and data science.</li>
+<li><strong>Project Development:</strong> Opportunities to work on real-world projects, fostering innovation and practical skills.</li>
+<li><strong>Competitions:</strong> Participation in national and international STEM challenges to test knowledge and abilities.</li>
+<li><strong>Guest Lectures:</strong> Inviting renowned experts and professionals to share insights and career guidance.</li>
+<li><strong>Mentorship Programs:</strong> Connecting experienced members with new students for guidance and support.</li>
+<li><strong>Community Engagement:</strong> Organizing events and initiatives to promote STEM education in the wider community.</li>
+</ul>
+</div>
+
+<div class="section-block">
+<h3>What Makes Us Unique</h3>
+<p>Our distinct approach sets the STEM Society apart:</p>
+<ul>
+<li><strong>Interdisciplinary Focus:</strong> We break down traditional academic silos, encouraging collaboration across all STEM disciplines.</li>
+<li><strong>Student-Led Initiatives:</strong> Empowering students to lead projects and organize events, fostering leadership and ownership.</li>
+<li><strong>Strong Industry Connections:</strong> Bridging the gap between academia and industry through partnerships and networking opportunities.</li>
+<li><strong>Inclusive Environment:</strong> Committed to creating a welcoming and supportive community for members from all backgrounds.</li>
+<li><strong>Impact-Driven Approach:</strong> Focusing on projects and activities that not only educate but also contribute positively to society.</li>
+</ul>
+</div>
+
+<div class="section-block">
+<h3>Meet the Faculty Coordinators</h3>
+<p>Our dedicated faculty coordinators provide invaluable guidance and support to the STEM Society.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+    <div class="faculty-card">
+        <img src="IMG_7218.JPG" alt="Dr. Jane Smith">
+        <h4>Dr. Jane Smith</h4>
+        <p>Head Coordinator | Physics Department</p>
+        <p>Specialization: Astrophysics, Quantum Mechanics</p>
+        <div class="social-links">
+            <a href="#" class="fab fa-linkedin" title="LinkedIn"></a>
+            <a href="#" class="fa fa-envelope" title="Email"></a>
+        </div>
+    </div>
+    <div class="faculty-card">
+        <img src="IMG_2172.HEIC" alt="Prof. David Johnson">
+        <h4>Prof. David Johnson</h4>
+        <p>Coordinator | Computer Science Department</p>
+        <p>Specialization: AI, Machine Learning</p>
+        <div class="social-links">
+            <a href="#" class="fab fa-linkedin" title="LinkedIn"></a>
+            <a href="#" class="fa fa-envelope" title="Email"></a>
+        </div>
+    </div>
+    <div class="faculty-card">
+        <img src="JJJG2072.JPG" alt="Dr. Emily Lee">
+        <h4>Dr. Emily Lee</h4>
+        <p>Coordinator | Biology Department</p>
+        <p>Specialization: Genetics, Bioinformatics</p>
+        <div class="social-links">
+            <a href="#" class="fab fa-linkedin" title="LinkedIn"></a>
+            <a href="#" class="fa fa-envelope" title="Email"></a>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block collaborations-partners">
+<h3>Collaborations & Partners</h3>
+<p>We believe in the power of collaboration to amplify our impact. The STEM Society proudly partners with leading organizations, academic institutions, and industry leaders to create unparalleled opportunities for our members and advance STEM initiatives.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+    <div class="flex items-center justify-center p-6 bg-white bg-opacity-10 rounded-lg shadow-md transition-transform duration-300 hover:scale-105">
+        <img src="IMG_0516.jpg" alt="Partner Logo 1" class="h-16 object-contain">
+    </div>
+    <div class="flex items-center justify-center p-6 bg-white bg-opacity-10 rounded-lg shadow-md transition-transform duration-300 hover:scale-105">
+        <img src="IMG_0852.JPG" alt="Partner Logo 2" class="h-16 object-contain">
+    </div>
+    <div class="flex items-center justify-center p-6 bg-white bg-opacity-10 rounded-lg shadow-md transition-transform duration-300 hover:scale-105">
+        <img src="SOGY4682.JPG" alt="Partner Logo 3" class="h-16 object-contain">
+    </div>
+    <div class="flex items-center justify-center p-6 bg-white bg-opacity-10 rounded-lg shadow-md transition-transform duration-300 hover:scale-105">
+        <img src="WDAC0590.JPG" alt="Partner Logo 4" class="h-16 object-contain">
+    </div>
+    <div class="flex items-center justify-center p-6 bg-white bg-opacity-10 rounded-lg shadow-md transition-transform duration-300 hover:scale-105">
+        <img src="IMG_2239.HEIC" alt="Partner Logo 5" class="h-16 object-contain">
+    </div>
+    <div class="flex items-center justify-center p-6 bg-white bg-opacity-10 rounded-lg shadow-md transition-transform duration-300 hover:scale-105">
+        <img src="IMG_2231.HEIC" alt="Partner Logo 6" class="h-16 object-contain">
+    </div>
+</div>
+<p class="mt-8 text-center text-sm text-gray-400">Interested in partnering with us? <a href="#" class="text-[#DC143C] hover:underline">Contact us</a> to explore collaboration opportunities.</p>
+</div>
+
+<div class="section-block how-to-get-involved">
+<h3>How to Get Involved</h3>
+<p>Joining the STEM Society is easy and rewarding! Whether you're a student, faculty member, or simply a STEM enthusiast, there are many ways to contribute and benefit from our community.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+    <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md text-center transition-transform duration-300 hover:scale-105">
+        <i class="fas fa-user-plus text-5xl mb-4"></i>
+        <h4 class="font-bold text-xl mb-2 text-white">Become a Member</h4>
+        <p class="text-gray-300 mb-4">Gain access to exclusive workshops, projects, and networking events. Open to all students passionate about STEM.</p>
+        <a href="#" class="inline-block">Join Now</a>
+    </div>
+    <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md text-center transition-transform duration-300 hover:scale-105">
+        <i class="fas fa-hand-holding-heart text-5xl mb-4"></i>
+        <h4 class="font-bold text-xl mb-2 text-white">Volunteer & Contribute</h4>
+        <p class="text-gray-300 mb-4">Lend your skills and time to support our events, projects, and outreach programs. Make a real difference!</p>
+        <a href="#" class="inline-block">Volunteer</a>
+    </div>
+    <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md text-center transition-transform duration-300 hover:scale-105">
+        <i class="fas fa-chalkboard-teacher text-5xl mb-4"></i>
+        <h4 class="font-bold text-xl mb-2 text-white">Faculty Involvement</h4>
+        <p class="text-gray-300 mb-4">Faculty members are invited to serve as mentors, advisors, or guest speakers. Your expertise is invaluable.</p>
+        <a href="#" class="inline-block">Learn More</a>
+    </div>
+    <div class="bg-white bg-opacity-10 p-6 rounded-lg shadow-md text-center transition-transform duration-300 hover:scale-105">
+        <i class="fas fa-university text-5xl mb-4"></i>
+        <h4 class="font-bold text-xl mb-2 text-white">Institutional Partnerships</h4>
+        <p class="text-gray-300 mb-4">Explore collaboration opportunities for your institution to work with the STEM Society on joint initiatives.</p>
+        <a href="#" class="inline-block">Propose Partnership</a>
+    </div>
+</div>
+</div>
+
+</section>
+</main>
+
+<footer>
+    <div class="ftr-box">
+        <div class="content-box1">
+            <div class="c-box-1">
+                <p class="c-heading">OUR PORTFOLIO</p>
+                <a href="#"><p>About Us</p></a>
+                <a href="#"><p>Administration</p></a>
+                <a href="#"><p>Events</p></a>
+                <a href="#"><p>Projects</p></a>
+            </div>
+            <div class="c-box-2">
+                <p class="c-heading">LEARN ABOUT US</p>
+                <a href="#"><p>Blog / Articles</p></a>
+                <a href="#"><p>Gallery</p></a>
+                <a href="#"><p>Achievements</p></a>
+            </div>
+            <div class="c-box-3">
+                <p class="c-heading">JOIN THE JOURNEY</p>
+                <a href="#"><p>Join Us</p></a>
+                <a href="#"><p>Contact</p></a>
+                <a href="#"><p>Sign Up</p></a>
+            </div>
+            <div class="c-box-4">
+                <p class="c-heading">GIVE</p>
+                <a href="#"><p>Donate</p></a>
+            </div>
+        </div>
+
+        <hr style="background-color: white; border: none; height: 1px;" />
+
+        <div class="content-box2">
+            <div class="add-info">
+                <div class="logo">
+                    <img class="ftr-logo" src="Asserts/STEM Logo 1.4.png" alt="STEM Society logo" />
+                </div>
+                <div class="logo-tagline">
+                    <p>Empowering Future Innovators</p>
+                    <p>One Project at a Time</p>
+                </div>
+                <div class="add-links">
+                    <p style="padding-top: 20px;">
+                        <a href="#">Account Center</a> •
+                        <a href="#">Contact Us</a> •
+                        <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+                <div class="tiny-text">
+                    <p>© 2025 STEM Society. All rights reserved.</p>
+                </div>
+            </div>
+
+            <div class="socials">
+                <div class="button-panel">
+                    <a class="fa fa-facebook" href="#" title="Facebook"></a>
+                    <a class="fa fa-youtube" href="#" title="YouTube"></a>
+                    <a class="fa fa-instagram" href="#" title="Instagram"></a>
+                    <a class="fa fa-twitter" href="#" title="Twitter"></a>
+                    <a class="fa fa-linkedin" href="#" title="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button id="scrollToTopBtn" class="scroll-to-top-btn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Navbar functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const closeMenu = document.getElementById('closeMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        if (menuToggle && closeMenu && menuOverlay) {
+            menuToggle.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-closed');
+                menuOverlay.classList.add('overlay-open');
+            });
+
+            closeMenu.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-open');
+                menuOverlay.classList.add('overlay-closed');
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuOverlay.classList.remove('overlay-open');
+                    menuOverlay.classList.add('overlay-closed');
+                }
+            });
+        }
+
+        // Scroll to Top Button Functionality
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        };
+
+        // When the user clicks on the button, scroll to the top of the document
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll animation
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

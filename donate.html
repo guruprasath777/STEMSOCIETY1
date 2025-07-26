@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Donate - STEM Society</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* General Body and Font Styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #0A1128; /* Dark Blue - Main Theme */
+            color: #FFFFFF; /* White for general text */
+        }
+
+        /* Navbar and Overlay Styles */
+        header {
+            background-color: #0A1128; /* Dark Blue Navbar background */
+        }
+        #menuOverlay {
+            background-color: #0A1128; /* Dark Blue Overlay background */
+        }
+        .transition-slide {
+            transition: transform 0.5s ease-in-out;
+            transform: translateX(100%); /* Start off-screen to the right */
+        }
+        .overlay-closed {
+            transform: translateX(100%);
+        }
+        .overlay-open {
+            transform: translateX(0);
+        }
+        .desktop-navbar-text {
+            display: none;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-left: 20px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            flex-grow: 1;
+            text-align: center;
+        }
+        @media (min-width: 1024px) {
+            .desktop-navbar-text {
+                display: block;
+            }
+        }
+        /* Styles for menu links inside the overlay */
+        .menu-link {
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent li/p */
+            transition: color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .menu-link:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+        /* Main content padding to account for fixed header */
+        main {
+            padding-top: 80px; /* Adjust based on your header height */
+        }
+
+        /* Donate Page Specific Styles */
+        .donate-page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .donate-page-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: #FFFFFF; /* White heading */
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .donate-page-container h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #DC143C; /* Red accent underline */
+            border-radius: 2px;
+        }
+
+        .section-block {
+            background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency */
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .section-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: #FFFFFF; /* White for subheadings */
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-block h3::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #DC143C; /* Red underline */
+            border-radius: 1.5px;
+        }
+
+        /* Donation Impact Section */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .impact-item {
+            background: rgba(41, 60, 90, 0.7);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .impact-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+        }
+        .impact-item i {
+            font-size: 3rem;
+            color: #DC143C; /* Red for icons */
+            margin-bottom: 15px;
+        }
+        .impact-item h4 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.3rem;
+            color: #E0E1DD;
+            margin-bottom: 10px;
+        }
+        .impact-item p {
+            font-size: 0.95rem;
+            color: #B0B0B0;
+        }
+
+        /* Payment Integration */
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .payment-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #DC143C; /* Red button */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px; /* Limit button width */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .payment-button:hover {
+            background: #B20C2D; /* Darker red on hover */
+            transform: translateY(-3px);
+        }
+        .payment-button i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        /* Donor Wall */
+        .donor-wall-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .donor-card {
+            background: rgba(10, 17, 40, 0.7); /* Consistent with impact-item background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .donor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+        }
+        .donor-card h4 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.1rem;
+            color: #E0E1DD;
+            margin-bottom: 5px;
+        }
+        .donor-card p {
+            font-size: 0.85rem;
+            color: #B0B0B0;
+        }
+
+        /* Scroll to Top Button */
+        #scrollToTopBtn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position */
+            bottom: 30px; /* Place at the bottom */
+            right: 30px; /* Place at the right */
+            z-index: 99; /* Make sure it does not overlap */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: #DC143C; /* Set a background color */
+            color: white; /* Text color */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 10px; /* Rounded corners */
+            font-size: 18px; /* Increase font size */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #scrollToTopBtn.show {
+            display: block; /* Show when class is added */
+        }
+        
+        /* Footer Styles */
+        .footer {
+            background-color: #0A1128; /* Dark Blue */
+            color: #FFFFFF;
+            padding: 40px 20px;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #DC143C; /* Red accent */
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #B20C2D; /* Darker red */
+            border-radius: 1.5px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section ul li a {
+            color: #E0E1DD; /* Light gray for links */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+        .footer-section p {
+            color: #B0B0B0; /* Slightly darker gray for text */
+        }
+
+        .footer .socials a {
+            color: #E0E1DD; /* Social icons color */
+            margin-right: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .footer .socials a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .donate-page-container {
+                padding: 30px 15px;
+            }
+            .donate-page-container h2 {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+                margin-bottom: 30px;
+            }
+            .section-block {
+                padding: 30px 20px;
+                margin-bottom: 30px;
+            }
+            .section-block h3 {
+                font-size: clamp(1.6rem, 6vw, 2.2rem);
+            }
+
+            /* Impact Grid */
+            .impact-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 20px;
+            }
+            .impact-item i {
+                font-size: 2.5rem;
+            }
+            .impact-item h4 {
+                font-size: 1.2rem;
+            }
+            .impact-item p {
+                font-size: 0.9rem;
+            }
+
+            /* Payment Options */
+            .payment-button {
+                padding: 12px 25px;
+                font-size: 1rem;
+                max-width: 100%; /* Full width on mobile */
+            }
+
+            /* Donor Wall */
+            .donor-wall-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Smaller cards on mobile */
+                gap: 15px;
+            }
+            .donor-card {
+                padding: 15px;
+            }
+            .donor-card h4 {
+                font-size: 1rem;
+            }
+            .donor-card p {
+                font-size: 0.8rem;
+            }
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-section {
+                min-width: unset;
+                width: 100%;
+            }
+            .footer-section h3::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="w-full fixed top-0 z-50 bg-[#0A1128] text-white shadow-md">
+        <div class="flex justify-between items-center px-6 py-4">
+            <button class="focus:outline-none flex items-center gap-2 text-lg font-semibold" id="menuToggle">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span class="hidden md:inline">Menu</span>
+            </button>
+            <h2 class="desktop-navbar-text hidden lg:block">Empowering Future Innovators</h2>
+            <h1 class="text-xl font-bold uppercase tracking-wider">STEM Society</h1>
+            <img class="h-10 w-auto" src="Asserts/STEM Logo 1.4.png" alt="Logo"/>
+        </div>
+    </header>
+
+    <div class="fixed top-0 left-0 w-full h-full bg-[#0A1128] text-white z-50 transition-slide overlay-closed overflow-hidden pt-16" id="menuOverlay">
+        <div class="relative flex flex-col h-full">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-white/20 z-10 relative">
+                <button class="flex items-center gap-2 text-lg font-semibold" id="closeMenu">
+                    <span class="text-2xl">✕</span> Close
+                </button>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold">Search</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-24 right-6 z-0 opacity-10">
+                <img class="w-48 md:w-64 h-auto" src="Asserts/STEM Logo 1.4.png" alt="Seal Logo"/>
+            </div>
+
+            <div class="flex flex-col md:flex-row flex-grow px-6 py-4 gap-8 relative z-10 overflow-y-auto">
+                <div class="w-full md:w-1/3 border-r md:border-white/20">
+                    <ul class="space-y-3 font-bold text-lg uppercase">
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="index3.html" class="block menu-link">Home</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="aboutus.html" class="block menu-link">About us</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="team.html" class="block menu-link">Administration</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="event.html" class="block menu-link">Events</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="project.html" class="block menu-link">Projects</a></li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-2/3 mt-4 md:mt-0 space-y-4 text-lg">
+                    <ul class="space-y-3 font-bold text-lg uppercase">
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="blogandarticles.html" class="block menu-link">Blog / Articles</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="achievements.html" class="block menu-link">Achievements</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="gallery.html" class="block menu-link">Gallery</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="festival.html" class="block menu-link">National STEM Festival</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a href="contact.html" class="block menu-link">Contact</a></li>
+                        <li class="p-3 rounded bg-white bg-opacity-10"><a href="donate.html" class="block menu-link">Donate</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="socials flex justify-end items-center gap-6 text-2xl px-6 py-4 border-t border-white/20 z-10 relative">
+                <div class="button-panel flex gap-6">
+                    <a class="fa fa-facebook hover:text-gray-300" href="#" title="Facebook"></a>
+                    <a class="fa fa-youtube hover:text-gray-300" href="#" title="YouTube"></a>
+                    <a class="fa fa-instagram hover:text-gray-300" href="#" title="Instagram"></a>
+                    <a class="fa fa-twitter hover:text-gray-300" href="#" title="Twitter"></a>
+                    <a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="donate-page-container">
+            <h2>Support Our Mission</h2>
+            <p class="text-center text-lg text-gray-400 mb-10">Your generous contributions empower the next generation of STEM leaders and innovators.</p>
+
+            <div class="section-block">
+                <h3>Donation Purpose & Impact</h3>
+                <p class="text-gray-400 mb-8">Every donation, no matter the size, makes a tangible difference in our ability to provide high-quality STEM education and opportunities.</p>
+                <div class="impact-grid">
+                    <div class="impact-item">
+                        <i class="fas fa-flask"></i>
+                        <h4>Fund Research & Projects</h4>
+                        <p>Support groundbreaking student research and innovative technical projects.</p>
+                    </div>
+                    <div class="impact-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h4>Scholarships & Workshops</h4>
+                        <p>Provide scholarships for underprivileged students and fund interactive workshops.</p>
+                    </div>
+                    <div class="impact-item">
+                        <i class="fas fa-users"></i>
+                        <h4>Community Outreach</h4>
+                        <p>Expand our outreach programs to inspire STEM interest in local schools and communities.</p>
+                    </div>
+                    <div class="impact-item">
+                        <i class="fas fa-trophy"></i>
+                        <h4>Competition Participation</h4>
+                        <p>Enable our teams to participate in national and international STEM competitions.</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-center text-gray-400">Your support directly fuels our mission to foster scientific curiosity and technological advancement.</p>
+            </div>
+
+            <div class="section-block">
+                <h3>Make a Secure Donation</h3>
+                <p class="text-gray-400 mb-8">Choose your preferred payment method below. All transactions are secure and encrypted.</p>
+                <div class="payment-options">
+                    <a href="#" class="payment-button">
+                        <i class="fas fa-rupee-sign"></i> Donate with Razorpay (India)
+                    </a>
+                    <a href="#" class="payment-button">
+                        <i class="fas fa-qrcode"></i> Donate with UPI (India)
+                    </a>
+                    <a href="#" class="payment-button">
+                        <i class="fab fa-paypal"></i> Donate with PayPal (International)
+                    </a>
+                    <a href="#" class="payment-button">
+                        <i class="fas fa-money-check-alt"></i> Direct Bank Transfer (Sri Lanka)
+                    </a>
+                    <p class="text-gray-400 mt-4">For bank transfers or other methods, please <a href="contact.html" class="text-[#DC143C] hover:underline">contact us</a>.</p>
+                </div>
+            </div>
+
+            <div class="section-block">
+                <h3>Our Valued Donors</h3>
+                <p class="text-gray-400 mb-8">We extend our heartfelt gratitude to all our generous supporters who make our work possible.</p>
+                <div class="donor-wall-grid">
+                    <div class="donor-card">
+                        <h4>The Innovation Fund</h4>
+                        <p>Platinum Supporter</p>
+                    </div>
+                    <div class="donor-card">
+                        <h4>Dr. & Mrs. Sharma</h4>
+                        <p>Gold Contributor</p>
+                    </div>
+                    <div class="donor-card">
+                        <h4>Tech Solutions Inc.</h4>
+                        <p>Silver Partner</p>
+                    </div>
+                    <div class="donor-card">
+                        <h4>A. B. C. Foundation</h4>
+                        <p>Bronze Sponsor</p>
+                    </div>
+                    <div class="donor-card">
+                        <h4>Anonymous Donor</h4>
+                        <p>Community Supporter</p>
+                    </div>
+                    <div class="donor-card">
+                        <h4>The Future Builders</h4>
+                        <p>Patron</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-center text-gray-400">Want to see your name here? Become a donor today!</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>STEM Society</h3>
+                <p>Fostering innovation and excellence in Science, Technology, Engineering, and Mathematics.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index3.html" class="hover:text-gray-300 transition-colors">Home</a></li>
+                    <li><a href="aboutus.html" class="hover:text-gray-300 transition-colors">About Us</a></li>
+                    <li><a href="event.html" class="hover:text-gray-300 transition-colors">Events</a></li>
+                    <li><a href="project.html" class="hover:text-gray-300 transition-colors">Projects</a></li>
+                    <li><a href="blogandarticles.html" class="hover:text-gray-300 transition-colors">Blog / Articles</a></li>
+                    <li><a href="achievements.html" class="hover:text-gray-300 transition-colors">Achievements</a></li>
+                    <li><a href="gallery.html" class="hover:text-gray-300 transition-colors">Gallery</a></li>
+                    <li><a href="festival.html" class="hover:text-gray-300 transition-colors">National STEM Festival</a></li>
+                    <li><a href="contact.html" class="hover:text-gray-300 transition-colors">Contact</a></li>
+                    <li><a href="donate.html" class="hover:text-gray-300 transition-colors">Donate</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@stemsociety.org</p>
+                <p>Phone: +1 (123) 456-7890</p>
+                <div class="socials mt-4 text-xl">
+                    <a class="fa fa-facebook hover:text-gray-300" href="#" title="Facebook"></a>
+                    <a class="fa fa-youtube hover:text-gray-300" href="#" title="YouTube"></a>
+                    <a class="fa fa-instagram hover:text-gray-300" href="#" title="Instagram"></a>
+                    <a class="fa fa-twitter hover:text-gray-300" href="#" title="Twitter"></a>
+                    <a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8 pt-8 border-t border-white/10">
+            <p>&copy; 2024 STEM Society. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="scrollToTopBtn" title="Go to top">↑</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+
+            menuToggle.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-closed');
+                menuOverlay.classList.add('overlay-open');
+            });
+
+            closeMenu.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-open');
+                menuOverlay.classList.add('overlay-closed');
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuOverlay.classList.remove('overlay-open');
+                    menuOverlay.classList.add('overlay-closed');
+                }
+            });
+
+            // Scroll to Top Button Functionality
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+            // When the user scrolls down 200px from the top of the document, show the button
+            window.onscroll = function() {
+                if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                    scrollToTopBtn.classList.add('show');
+                } else {
+                    scrollToTopBtn.classList.remove('show');
+                }
+            };
+
+            // When the user clicks on the button, scroll to the top of the document
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth' // Smooth scroll animation
+                });
+            });
+        });
+    </script>
+</body>
+</html>

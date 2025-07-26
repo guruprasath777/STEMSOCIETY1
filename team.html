@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Our Team - STEM Society</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* General Body and Font Styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #0A1128; /* Dark Blue - Main Theme */
+            color: #FFFFFF; /* White for general text */
+        }
+
+        /* Navbar and Overlay Styles */
+        header {
+            background-color: #0A1128; /* Dark Blue Navbar background */
+        }
+        #menuOverlay {
+            background-color: #0A1128; /* Dark Blue Overlay background */
+        }
+        .transition-slide {
+            transition: transform 0.5s ease-in-out;
+            transform: translateX(100%); /* Start off-screen to the right */
+        }
+        .overlay-closed {
+            transform: translateX(100%);
+        }
+        .overlay-open {
+            transform: translateX(0);
+        }
+        .desktop-navbar-text {
+            display: none;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-left: 20px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            flex-grow: 1;
+            text-align: center;
+        }
+        @media (min-width: 1024px) {
+            .desktop-navbar-text {
+                display: block;
+            }
+        }
+
+        /* Styles for menu links inside the overlay */
+        .menu-link {
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent li/p */
+            transition: color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .menu-link:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+        /* Main content padding to account for fixed header */
+        main {
+            padding-top: 80px; /* Adjust based on your header height */
+        }
+
+        /* Team Page Specific Styles */
+        .team-page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .team-page-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: #FFFFFF; /* Changed to White */
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .team-page-container h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #DC143C; /* Changed to Red accent */
+            border-radius: 2px;
+        }
+
+        .team-member-block {
+            display: flex;
+            align-items: center;
+            background: rgba(10, 17, 40, 0.7); /* Adjusted for consistency with main theme */
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .team-member-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .team-member-block:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .team-member-image-wrapper {
+            flex-shrink: 0;
+            width: 40%;
+            max-height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .team-member-block:nth-child(even) .team-member-image-wrapper {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .team-member-block:nth-child(odd) .team-member-image-wrapper {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+
+        .team-member-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.8);
+            transition: filter 0.3s ease;
+        }
+
+        .team-member-block:hover .team-member-image {
+            filter: brightness(1);
+        }
+
+        .team-member-details {
+            flex-grow: 1;
+            padding: 30px 40px;
+            text-align: left;
+        }
+
+        .team-member-details h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            color: #FFFFFF; /* Changed to White */
+            margin-bottom: 10px;
+        }
+
+        .team-member-details .title {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+            color: #DC143C; /* Changed to Red Accent */
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .team-member-details p {
+            font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+            color: #E0E0E0; /* Slightly off-white for body text */
+            margin-bottom: 20px;
+        }
+
+        .team-member-details .social-links a {
+            color: #DC143C; /* Changed to Red Accent */
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .team-member-details .social-links a:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .team-page-container {
+                padding: 30px 15px;
+            }
+
+            .team-page-container h2 {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+                margin-bottom: 30px;
+            }
+
+            .team-member-block {
+                flex-direction: column;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .team-member-block:nth-child(even) {
+                flex-direction: column;
+            }
+
+            .team-member-image-wrapper {
+                width: 100%;
+                height: 250px;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .team-member-block:nth-child(even) .team-member-image-wrapper,
+            .team-member-block:nth-child(odd) .team-member-image-wrapper {
+                border-radius: 10px 10px 0 0;
+            }
+
+            .team-member-details {
+                padding: 20px 25px;
+                text-align: center;
+            }
+
+            .team-member-details h3 {
+                font-size: clamp(1.6rem, 6vw, 2.2rem);
+            }
+
+            .team-member-details .title {
+                font-size: clamp(1rem, 4vw, 1.2rem);
+            }
+
+            .team-member-details p {
+                font-size: clamp(0.85rem, 3.5vw, 1rem);
+                margin-bottom: 15px;
+            }
+
+            .team-member-details .social-links {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .team-member-details .social-links a {
+                margin-right: 0;
+            }
+        }
+
+        /* Scroll to Top Button Styles */
+        .scroll-to-top-btn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position */
+            bottom: 30px; /* 30px from the bottom */
+            right: 30px; /* 30px from the right */
+            z-index: 99; /* Ensure it's above other content */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: #DC143C; /* Red background (consistent with your theme) */
+            color: white; /* White text/icon */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 50%; /* Make it circular */
+            font-size: 1.5em; /* Icon size */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.5s ease; /* Smooth transitions */
+            opacity: 0; /* Start fully transparent */
+        }
+
+        .scroll-to-top-btn:hover {
+            background-color: #B20C2D; /* Darker red on hover */
+            transform: translateY(-3px); /* Slight lift on hover */
+        }
+
+        /* Class to make the button visible */
+        .scroll-to-top-btn.show {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-to-top-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px;
+                font-size: 1.2em;
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #0A1128; /* Dark blue background */
+            color: #E0E0E0; /* Light gray text */
+            font-family: 'Inter', sans-serif;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+        .ftr-box {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content-box1 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+        .content-box1 .c-heading {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .content-box1 a {
+            text-decoration: none;
+            color: #E0E0E0;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        .content-box1 a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box1 a p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+        hr {
+            background-color: #3C4B6F; /* A lighter shade of blue for the separator */
+            border: none;
+            height: 1px;
+            margin: 30px 0;
+        }
+        .content-box2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            gap: 20px;
+        }
+        .content-box2 .add-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            flex-grow: 1;
+            min-width: 280px;
+        }
+        .content-box2 .logo img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .content-box2 .logo-tagline p {
+            font-size: 1em;
+            margin: 0;
+            line-height: 1.4;
+            color: #FFFFFF;
+        }
+        .content-box2 .add-links {
+            margin-top: 15px;
+        }
+        .content-box2 .add-links a {
+            color: #778DA9; /* Muted blue for additional links */
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+        .content-box2 .add-links a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box2 .tiny-text {
+            margin-top: 15px;
+        }
+        .content-box2 .tiny-text p {
+            font-size: 0.8em;
+            color: #A9B3C7;
+            margin: 0;
+        }
+        .socials {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .socials .button-panel {
+            display: flex;
+            gap: 15px;
+        }
+        .socials .fa {
+            color: #FFFFFF;
+            font-size: 1.8em;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .socials .fa:hover {
+            color: #DC143C; /* Red on hover */
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Adjustments for footer */
+        @media (max-width: 768px) {
+            .content-box1 {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                text-align: center;
+            }
+            .content-box1 .c-box-1, .c-box-2, .c-box-3, .c-box-4 {
+                align-items: center;
+            }
+            .content-box2 {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .content-box2 .add-info {
+                align-items: center;
+                text-align: center;
+            }
+            .socials {
+                justify-content: center;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+   <header class="w-full fixed top-0 z-50 bg-[#0A1128] text-white shadow-md">
+    <div class="flex justify-between items-center px-6 py-4">
+        <button class="focus:outline-none flex items-center gap-2 text-lg font-semibold" id="menuToggle">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="hidden md:inline">Menu</span>
+        </button>
+        <h2 class="desktop-navbar-text hidden lg:block">AMERICAN NATIONAL COLLEGE</h2>
+        <h1 class="text-xl font-bold uppercase tracking-wider md:block">STEM Society</h1>
+
+        <img alt="Logo" class="h-10 w-auto" src="Asserts/STEM Logo 1.4.png"/>
+    </div>
+</header>
+
+    <div class="fixed top-0 left-0 w-full h-full bg-[#0A1128] text-white z-50 transition-slide overlay-closed overflow-hidden pt-16" id="menuOverlay">
+        <div class="relative flex flex-col h-full">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-white/20 z-10 relative">
+                <button class="flex items-center gap-2 text-lg font-semibold" id="closeMenu">
+                    <span class="text-2xl">✕</span> Close
+                </button>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="font-semibold">Search</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-24 right-6 z-0 opacity-10">
+                <img alt="Seal Logo" class="w-48 md:w-64 h-auto" src="Asserts/STEM Logo 1.4.png"/>
+            </div>
+
+            <div class="flex flex-col md:flex-row flex-grow px-6 py-4 gap-8 relative z-10 overflow-y-auto">
+                <div class="w-full md:w-1/3">
+                    <ul class="space-y-3 font-bold text-lg uppercase">
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="index.html">Home</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="aboutus.html">About Us</a></li>
+                        <li class="p-3 rounded bg-white bg-opacity-10"><a class="menu-link" href="team.html">Administration</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="achievements.html">Achievements</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="contact.html">Contact & Join Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="w-full md:w-1/3">
+                    <ul class="space-y-3 font-bold text-lg uppercase">
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="event.html">Events</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="project.html">Projects</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="gallery.html">Gallery</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="blogandarticles.html">Blogs & Articles</a></li>
+                        <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="donate.html">Donations</a></li>
+                    </ul>
+                </div>
+
+                <div class="w-full md:w-1/3">
+                    <p class="font-bold text-lg uppercase mb-3">Follow Us</p>
+                    <div class="socials mt-4 text-xl">
+                        <a class="fa fa-facebook hover:text-gray-300 mr-4" href="#" title="Facebook"></a>
+                        <a class="fa fa-youtube hover:text-gray-300 mr-4" href="#" title="YouTube"></a>
+                        <a class="fa fa-instagram hover:text-gray-300 mr-4" href="#" title="Instagram"></a>
+                        <a class="fa fa-twitter hover:text-gray-300 mr-4" href="#" title="Twitter"></a>
+                        <a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main>
+        <div class="team-page-container">
+            <h2>Our Team</h2>
+
+            <div class="team-member-block">
+                <div class="team-member-image-wrapper">
+                    <img alt="President Name" class="team-member-image" src="Asserts/Team/president.jpg"/>
+                </div>
+                <div class="team-member-details">
+                    <h3>MUTHALVAN</h3>
+                    <span class="title">President</span>
+                    <p>MUTHALVAN is a visionary leader with a passion for STEM education. With over 15 years of experience in academic leadership and community engagement, he has spearheaded numerous initiatives to promote scientific literacy and innovation among young minds. His dedication to fostering a collaborative environment has been instrumental in the society's growth and success.</p>
+                    <div class="social-links">
+                        <a class="fa fa-linkedin" href="#" target="_blank"></a>
+                        <a class="fa fa-twitter" href="#" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-member-block">
+                <div class="team-member-image-wrapper">
+                    <img alt="Vice President Name" class="team-member-image" src="Asserts/Team/vice_president.jpg"/>
+                </div>
+                <div class="team-member-details">
+                    <h3>ABISHEK</h3>
+                    <span class="title">Vice President</span>
+                    <p>ABISHEK is a dedicated educator and researcher specializing in robotics and artificial intelligence. As Vice President, she plays a crucial role in developing and implementing STEM programs, ensuring they are engaging and accessible to all students. Her innovative approach to curriculum design has significantly enhanced the learning experience for our members.</p>
+                    <div class="social-links">
+                        <a class="fa fa-linkedin" href="#" target="_blank"></a>
+                        <a class="fa fa-github" href="#" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-member-block">
+                <div class="team-member-image-wrapper">
+                    <img alt="Secretary Name" class="team-member-image" src="Asserts/Team/secretary.jpg"/>
+                </div>
+                <div class="team-member-details">
+                    <h3>PETER PARKER</h3>
+                    <span class="title">Secretary</span>
+                    <p>PETER PARKER brings exceptional organizational skills and a keen eye for detail to his role as Secretary. He manages all administrative aspects of the society, ensuring smooth operations and effective communication among team members and external partners. His commitment to efficiency is vital for the society's day-to-day functions.</p>
+                    <div class="social-links">
+                        <a class="fa fa-linkedin" href="#" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-member-block">
+                <div class="team-member-image-wrapper">
+                    <img alt="Treasurer Name" class="team-member-image" src="Asserts/Team/treasurer.jpg"/>
+                </div>
+                <div class="team-member-details">
+                    <h3>TONT STARK</h3>
+                    <span class="title">Treasurer</span>
+                    <p>TONY STARK is a finance professional with a strong background in non-profit accounting. As Treasurer, she meticulously manages the society's financial resources, ensuring transparency and accountability. Her strategic financial planning supports the funding of new projects and initiatives, enabling the society to expand its reach and impact.</p>
+                    <div class="social-links">
+                        <a class="fa fa-linkedin" href="#" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-member-block">
+                <div class="team-member-image-wrapper">
+                    <img alt="Program Director Name" class="team-member-image" src="Asserts/Team/program_director.jpg"/>
+                </div>
+                <div class="team-member-details">
+                    <h3>SERENA</h3>
+                    <span class="title">Program Director</span>
+                    <p>SERENA is an experienced program manager with a focus on educational outreach. He designs and oversees all STEM programs, workshops, and events, ensuring they meet educational objectives and engage participants effectively. His enthusiasm for hands-on learning inspires both students and volunteers.</p>
+                    <div class="social-links">
+                        <a class="fa fa-linkedin" href="#" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-member-block">
+                <div class="team-member-image-wrapper">
+                    <img alt="Marketing Head Name" class="team-member-image" src="Asserts/Team/marketing_head.jpg"/>
+                </div>
+                <div class="team-member-details">
+                    <h3>VIRAT KOHLI</h3>
+                    <span class="title">Marketing Head</span>
+                    <p>VIART KOHLI is a communications expert passionate about spreading the word about STEM. She leads all marketing and public relations efforts, enhancing the society's visibility and attracting new members and partnerships. Her creative strategies ensure our message reaches a wide and diverse audience.</p>
+                    <div class="social-links">
+                        <a class="fa fa-linkedin" href="#" target="_blank"></a>
+                        <a class="fa fa-instagram" href="#" target="_blank"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button id="scrollToTopBtn" class="scroll-to-top-btn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <footer>
+        <div class="ftr-box">
+            <div class="content-box1">
+                <div class="c-box-1">
+                    <p class="c-heading">Quick Links</p>
+                    <a href="aboutus.html"><p>About Us</p></a>
+                    <a href="team.html"><p>Our Team</p></a>
+                    <a href="achievements.html"><p>Achievements</p></a>
+                    <a href="event.html"><p>Events</p></a>
+                    <a href="blogandarticles.html"><p>Blogs & Articles</p></a>
+                </div>
+
+                <div class="c-box-2">
+                    <p class="c-heading">Resources</p>
+                    <a href="project.html"><p>Projects</p></a>
+                    <a href="gallery.html"><p>Gallery</p></a>
+                    <a href="#"><p>Research Papers</p></a>
+                    <a href="#"><p>Tutorials</p></a>
+                </div>
+
+                <div class="c-box-3">
+                    <p class="c-heading">Get Involved</p>
+                    <a href="contact.html"><p>Join Us</p></a>
+                    <a href="donate.html"><p>Donate</p></a>
+                    <a href="#"><p>Volunteer</p></a>
+                    <a href="#"><p>Partnerships</p></a>
+                </div>
+
+                <div class="c-box-4">
+                    <p class="c-heading">Contact Us</p>
+                    <p>Email: info@stemsociety.org</p>
+                    <p>Phone: +1 (234) 567-8901</p>
+                    <p>Address: 123 STEM Avenue, Science City, ST 12345</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="content-box2">
+                <div class="add-info">
+                    <div class="logo">
+                        <img src="Asserts/STEM Logo 1.4.png" alt="STEM Society Logo">
+                    </div>
+                    <div class="logo-tagline">
+                        <p>Empowering Future Innovators Through STEM.</p>
+                    </div>
+                    <div class="add-links">
+                        <a href="#">Privacy Policy</a>
+                        <span> | </span>
+                        <a href="#">Terms of Service</a>
+                        <span> | </span>
+                        <a href="#">Sitemap</a>
+                    </div>
+                    <div class="tiny-text">
+                        <p>Illustrations by Storyset</p>
+                    </div>
+                </div>
+
+                <div class="socials">
+                    <div class="button-panel">
+                        <a class="fa fa-facebook" href="#" title="Facebook"></a>
+                        <a class="fa fa-youtube" href="#" title="YouTube"></a>
+                        <a class="fa fa-instagram" href="#" title="Instagram"></a>
+                        <a class="fa fa-twitter" href="#" title="Twitter"></a>
+                        <a class="fa fa-linkedin" href="#" title="LinkedIn"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-8 pt-8 border-t border-white/10">
+                <p>&copy; 2024 STEM Society. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Toggle Functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const menuOverlay = document.getElementById('menuOverlay');
+
+            if (menuToggle && closeMenu && menuOverlay) {
+                menuToggle.addEventListener('click', () => {
+                    menuOverlay.classList.remove('overlay-closed');
+                    menuOverlay.classList.add('overlay-open');
+                });
+
+                closeMenu.addEventListener('click', () => {
+                    menuOverlay.classList.remove('overlay-open');
+                    menuOverlay.classList.add('overlay-closed');
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        menuOverlay.classList.remove('overlay-open');
+                        menuOverlay.classList.add('overlay-closed');
+                    }
+                });
+            }
+
+            // Scroll to Top Button Functionality
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+            // When the user scrolls down 200px from the top of the document, show the button
+            window.onscroll = function() {
+                if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                    scrollToTopBtn.classList.add('show');
+                } else {
+                    scrollToTopBtn.classList.remove('show');
+                }
+            };
+
+            // When the user clicks on the button, scroll to the top of the document
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth' // Smooth scroll animation
+                });
+            });
+        });
+    </script>
+</body>
+</html>

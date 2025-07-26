@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Join Us / Contact - STEM Society</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&amp;family=Playfair+Display:wght@400;700&amp;family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="styles1.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* General Body and Font Styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #0A1128; /* Dark Blue - Main Theme */
+            color: #FFFFFF; /* White for general text */
+        }
+
+        /* Navbar and Overlay Styles */
+        header {
+            background-color: #0A1128; /* Dark Blue Navbar background */
+        }
+        #menuOverlay {
+            background-color: #0A1128; /* Dark Blue Overlay background */
+        }
+        .transition-slide {
+            transition: transform 0.5s ease-in-out;
+        }
+        .overlay-closed {
+            transform: translateX(100%);
+        }
+        .overlay-open {
+            transform: translateX(0);
+        }
+        .desktop-navbar-text {
+            display: none;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-left: 20px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            flex-grow: 1;
+            text-align: center;
+        }
+        @media (min-width: 1024px) {
+            .desktop-navbar-text {
+                display: block;
+            }
+        }
+
+        /* Styles for menu links inside the overlay */
+        .menu-link {
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent li/p */
+            transition: color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .menu-link:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+        /* Contact Page Specific Styles */
+        .contact-page-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .contact-page-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .contact-page-container h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #DC143C; /* Red accent */
+            border-radius: 2px;
+        }
+
+        .contact-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .contact-info-block {
+            background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency */
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .contact-info-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .contact-info-block .icon {
+            font-size: 3.5rem;
+            color: #DC143C; /* Red accent */
+            margin-bottom: 20px;
+        }
+
+        .contact-info-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #FFFFFF;
+            margin-bottom: 10px;
+        }
+
+        .contact-info-block p,
+        .contact-info-block a {
+            font-size: 1.1rem;
+            color: #E0E0E0; /* Slightly off-white */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info-block a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+        /* Contact Form Styles */
+        .contact-form-section {
+            background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 50px;
+        }
+
+        .contact-form-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            color: #E0E0E0;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background-color: rgba(10, 17, 40, 0.7); /* Even darker input background */
+            color: #FFFFFF;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form textarea:focus {
+            border-color: #DC143C; /* Red on focus */
+            background-color: rgba(10, 17, 40, 0.9);
+            outline: none;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form button {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #DC143C; /* Red accent */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .contact-form button:hover {
+            background-color: #B20C2D; /* Darker red on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Location Section */
+        .location-section {
+            background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .location-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #FFFFFF;
+            margin-bottom: 30px;
+        }
+
+        .location-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(10, 17, 40, 0.7); /* Darker background for card */
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .location-card .map-container {
+            width: 100%;
+            height: 350px;
+            background-color: #333; /* Placeholder for map */
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .location-card .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .location-card p {
+            font-size: 1.1rem;
+            color: #E0E0E0;
+            margin-bottom: 15px;
+        }
+
+        .location-card .view-map-button {
+            display: inline-block;
+            background: #DC143C; /* Red accent */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .location-card .view-map-button:hover {
+            background: #B20C2D; /* Darker red on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .contact-page-container {
+                padding: 30px 15px;
+            }
+            .contact-page-container h2 {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+                margin-bottom: 30px;
+            }
+            .contact-details-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-info-block {
+                padding: 25px;
+            }
+            .contact-info-block .icon {
+                font-size: 3rem;
+                margin-bottom: 15px;
+            }
+            .contact-info-block h3 {
+                font-size: 1.5rem;
+            }
+            .contact-info-block p,
+            .contact-info-block a {
+                font-size: 1rem;
+            }
+            .contact-form-section,
+            .location-section {
+                padding: 30px 20px;
+            }
+            .contact-form-section h3,
+            .location-section h3 {
+                font-size: 2rem;
+                margin-bottom: 25px;
+            }
+            .contact-form button {
+                padding: 12px 15px;
+                font-size: 1.1rem;
+            }
+            .location-card .map-container {
+                height: 250px;
+            }
+        }
+
+        /* Scroll to Top Button Styles */
+        .scroll-to-top-btn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position */
+            bottom: 30px; /* 30px from the bottom */
+            right: 30px; /* 30px from the right */
+            z-index: 99; /* Ensure it's above other content */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: #DC143C; /* Red background (consistent with your theme) */
+            color: white; /* White text/icon */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 50%; /* Make it circular */
+            font-size: 1.5em; /* Icon size */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.5s ease; /* Smooth transitions */
+            opacity: 0; /* Start fully transparent */
+        }
+
+        .scroll-to-top-btn:hover {
+            background-color: #B20C2D; /* Darker red on hover */
+            transform: translateY(-3px); /* Slight lift on hover */
+        }
+
+        /* Class to make the button visible */
+        .scroll-to-top-btn.show {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-to-top-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="w-full fixed top-0 z-50 bg-[#0A1128] text-white shadow-md">
+    <div class="flex justify-between items-center px-6 py-4">
+        <button class="focus:outline-none flex items-center gap-2 text-lg font-semibold" id="menuToggle">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="hidden md:inline">Menu</span>
+        </button>
+        <h2 class="desktop-navbar-text hidden lg:block">Empowering Future Innovators</h2>
+        <h1 class="text-xl font-bold uppercase tracking-wider hidden md:block">STEM Society</h1>
+
+        <img alt="Logo" class="h-10 w-auto" src="Asserts/STEM Logo 1.4.png"/>
+    </div>
+</header>
+
+<div class="fixed top-0 left-0 w-full h-full bg-[#0A1128] text-white z-50 transition-slide overlay-closed overflow-hidden pt-16" id="menuOverlay">
+    <div class="relative flex flex-col h-full">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-white/20 z-10 relative">
+            <button class="flex items-center gap-2 text-lg font-semibold" id="closeMenu">
+                <span class="text-2xl">✕</span> Close
+            </button>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold">Search</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-24 right-6 z-0 opacity-10">
+            <img alt="Seal Logo" class="w-48 md:w-64 h-auto" src="Asserts/STEM Logo 1.4.png"/>
+        </div>
+
+        <div class="flex flex-col md:flex-row flex-grow px-6 py-4 gap-8 relative z-10 overflow-y-auto">
+            <div class="w-full md:w-1/3 border-r border-white/20">
+                <ul class="space-y-3 font-bold text-lg uppercase">
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="index3.html">Home</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="aboutus.html">About us</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="team.html">Administration</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="event.html">Events</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="project.html">Projects</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="gallery.html">Gallery</a></li>
+                </ul>
+            </div>
+            <div class="w-full md:w-2/3 mt-4 md:mt-0 space-y-4 text-lg">
+                <p><a class="menu-link" href="blogandarticles.html">Articles</a></p>
+                <p><a class="menu-link" href="achievements.html">Achievements</a></p>
+                <p><a class="menu-link" href="festival.html">National Stem Festival</a></p>
+                <p><a class="menu-link" href="contact.html">Contact</a></p>
+                <p><a class="menu-link" href="donate.html">Donate</a></p>
+            </div>
+        </div>
+
+        <div class="socials flex justify-end items-center gap-6 text-2xl px-6 py-4 border-t border-white/20 z-10 relative">
+            <div class="button-panel flex gap-6">
+                <a class="fa fa-facebook hover:text-gray-300" href="#" title="Facebook"></a>
+                <a class="fa fa-youtube hover:text-gray-300" href="#" title="YouTube"></a>
+                <a class="fa fa-instagram hover:text-gray-300" href="#" title="Instagram"></a>
+                <a class="fa fa-twitter hover:text-gray-300" href="#" title="Twitter"></a>
+                <a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main class="pt-20">
+    <section class="contact-page-container">
+        <h2>Get in Touch</h2>
+        <p class="text-center text-lg text-gray-400 mb-10">We'd love to hear from you! Reach out to us through any of the methods below.</p>
+
+        <div class="contact-details-grid">
+            <div class="contact-info-block">
+                <i class="fas fa-envelope icon"></i>
+                <h3>Email Us</h3>
+                <p>For general inquiries, reach out to us.</p>
+                <p><a href="mailto:info@stemsociety.org">info@stemsociety.org</a></p>
+            </div>
+            <div class="contact-info-block">
+                <i class="fas fa-phone-alt icon"></i>
+                <h3>Call Us</h3>
+                <p>Speak to our support team.</p>
+                <p><a href="tel:+1234567890">+1 (234) 567-890</a></p>
+            </div>
+            <div class="contact-info-block">
+                <i class="fas fa-map-marker-alt icon"></i>
+                <h3>Visit Us</h3>
+                <p>Our office hours are Mon-Fri, 9 AM - 5 PM.</p>
+                <p>123 STEM Street, Innovate City, State 98765</p>
+            </div>
+        </div>
+
+        <div class="contact-form-section">
+            <h3>Send Us a Message</h3>
+            <form action="#" method="POST" class="contact-form">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div>
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" placeholder="john.doe@example.com" required>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="Inquiry about membership" required>
+                </div>
+                <div class="mt-4">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Type your message here..." required></textarea>
+                </div>
+                <button type="submit" class="mt-6">Send Message</button>
+            </form>
+        </div>
+
+        <div class="location-section">
+            <h3>Find Our Location</h3>
+            <div class="location-card">
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15764.12999710333!2d-122.08399049999999!3d37.4220063!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb2427a3c301d%3A0x6a1f8b4a7d6e4b9c!2sGoogleplex!5e0!3m2!1sen!2sus!4v1678234567890!5m2!1sen!2sus"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+                <p>STEM Society Headquarters</p>
+                <p>123 STEM Street, Innovate City, State 98765, Country</p>
+                <a href="https://maps.app.goo.gl/YourGoogleMapsLinkHere" target="_blank" class="view-map-button">Get Directions</a>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<footer>
+    <div class="ftr-box">
+        <div class="content-box1">
+            <div class="c-box-1">
+                <p class="c-heading">OUR PORTFOLIO</p>
+                <a href="#"><p>About Us</p></a>
+                <a href="#"><p>Administration</p></a>
+                <a href="#"><p>Events</p></a>
+                <a href="#"><p>Projects</p></a>
+            </div>
+            <div class="c-box-2">
+                <p class="c-heading">LEARN ABOUT US</p>
+                <a href="#"><p>Blog / Articles</p></a>
+                <a href="#"><p>Gallery</p></a>
+                <a href="#"><p>Achievements</p></a>
+            </div>
+            <div class="c-box-3">
+                <p class="c-heading">JOIN THE JOURNEY</p>
+                <a href="#"><p>Join Us</p></a>
+                <a href="#"><p>Contact</p></a>
+                <a href="#"><p>Sign Up</p></a>
+            </div>
+            <div class="c-box-4">
+                <p class="c-heading">GIVE</p>
+                <a href="#"><p>Donate</p></a>
+            </div>
+        </div>
+
+        <hr style="background-color: white; border: none; height: 1px;" />
+
+        <div class="content-box2">
+            <div class="add-info">
+                <div class="logo">
+                    <img class="ftr-logo" src="Asserts/STEM Logo 1.4.png" alt="STEM Society logo" />
+                </div>
+                <div class="logo-tagline">
+                    <p>Empowering Future Innovators</p>
+                    <p>One Project at a Time</p>
+                </div>
+                <div class="add-links">
+                    <p style="padding-top: 20px;">
+                        <a href="#">Account Center</a> •
+                        <a href="#">Contact Us</a> •
+                        <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+                <div class="tiny-text">
+                    <p>© 2025 STEM Society. All rights reserved.</p>
+                </div>
+            </div>
+
+            <div class="socials">
+                <div class="button-panel">
+                    <a class="fa fa-facebook" href="#" title="Facebook"></a>
+                    <a class="fa fa-youtube" href="#" title="YouTube"></a>
+                    <a class="fa fa-instagram" href="#" title="Instagram"></a>
+                    <a class="fa fa-twitter" href="#" title="Twitter"></a>
+                    <a class="fa fa-linkedin" href="#" title="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button id="scrollToTopBtn" class="scroll-to-top-btn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Navbar functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const closeMenu = document.getElementById('closeMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        if (menuToggle && closeMenu && menuOverlay) {
+            menuToggle.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-closed');
+                menuOverlay.classList.add('overlay-open');
+            });
+
+            closeMenu.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-open');
+                menuOverlay.classList.add('overlay-closed');
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuOverlay.classList.remove('overlay-open');
+                    menuOverlay.classList.add('overlay-closed');
+                }
+            });
+        }
+
+        // Scroll to Top Button Functionality
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        };
+
+        // When the user clicks on the button, scroll to the top of the document
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll animation
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Gallery - STEM Society</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="styles1.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        /* General Body and Font Styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #0A1128; /* Dark Blue - Main Theme */
+            color: #FFFFFF; /* White for general text */
+        }
+
+        /* Navbar and Overlay Styles */
+        header {
+            background-color: #0A1128; /* Dark Blue Navbar background */
+        }
+        #menuOverlay {
+            background-color: #0A1128; /* Dark Blue Overlay background */
+        }
+        .transition-slide {
+            transition: transform 0.5s ease-in-out;
+        }
+        .overlay-closed {
+            transform: translateX(100%);
+        }
+        .overlay-open {
+            transform: translateX(0);
+        }
+        .desktop-navbar-text {
+            display: none;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-left: 20px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            flex-grow: 1;
+            text-align: center;
+        }
+        @media (min-width: 1024px) {
+            .desktop-navbar-text {
+                display: block;
+            }
+        }
+
+        /* Styles for menu links inside the overlay */
+        .menu-link {
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent li/p */
+            transition: color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .menu-link:hover {
+            color: #DC143C; /* Red on hover */
+        }
+
+        /* Main content padding to account for fixed header */
+        main {
+            padding-top: 80px; /* Adjust based on your header height */
+        }
+
+        /* Gallery Page Specific Styles */
+        .gallery-page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .gallery-page-container h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            color: #FFFFFF;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .gallery-page-container h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: #DC143C; /* Red accent underline */
+            border-radius: 2px;
+        }
+
+        .section-block {
+            background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency */
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .section-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-block h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: #DC143C; /* Red for subheadings */
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-block h3::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #B20C2D; /* Darker red */
+            border-radius: 1.5px;
+        }
+
+        /* Gallery Item (Image/Video) */
+        .gallery-item {
+            background: rgba(27, 38, 59, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; /* For overlay */
+            cursor: pointer;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        .gallery-item img,
+        .gallery-item video {
+            width: 100%;
+            height: 220px; /* Fixed height for consistency */
+            object-fit: cover;
+            display: block;
+            filter: brightness(0.8);
+            transition: filter 0.3s ease;
+        }
+        .gallery-item:hover img,
+        .gallery-item:hover video {
+            filter: brightness(1);
+        }
+        .gallery-item-info {
+            padding: 15px;
+            text-align: center;
+        }
+        .gallery-item-info h4 {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+            color: #FFFFFF;
+            margin-bottom: 5px;
+        }
+        .gallery-item-info p {
+            font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+            color: #E0E0E0;
+        }
+
+        /* Video Play Icon Overlay */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .video-overlay {
+            opacity: 1;
+        }
+        .video-overlay i {
+            font-size: 3rem;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Grid Layouts */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #0A1128; /* Dark blue background */
+            color: #E0E0E0; /* Light gray text */
+            font-family: 'Inter', sans-serif;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+        .ftr-box {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content-box1 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+        .content-box1 .c-heading {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .content-box1 a {
+            text-decoration: none;
+            color: #E0E0E0;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        .content-box1 a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box1 a p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+        hr {
+            background-color: #3C4B6F; /* A lighter shade of blue for the separator */
+            border: none;
+            height: 1px;
+            margin: 30px 0;
+        }
+        .content-box2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            gap: 20px;
+        }
+        .content-box2 .add-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            flex-grow: 1;
+            min-width: 280px;
+        }
+        .content-box2 .logo img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .content-box2 .logo-tagline p {
+            font-size: 1em;
+            margin: 0;
+            line-height: 1.4;
+            color: #FFFFFF;
+        }
+        .content-box2 .add-links {
+            margin-top: 15px;
+        }
+        .content-box2 .add-links a {
+            color: #778DA9; /* Muted blue for additional links */
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+        .content-box2 .add-links a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box2 .tiny-text {
+            margin-top: 15px;
+        }
+        .content-box2 .tiny-text p {
+            font-size: 0.8em;
+            color: #A9B3C7;
+            margin: 0;
+        }
+        .socials {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .socials .button-panel {
+            display: flex;
+            gap: 15px;
+        }
+        .socials .fa {
+            color: #FFFFFF;
+            font-size: 1.8em;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .socials .fa:hover {
+            color: #DC143C; /* Red on hover */
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .gallery-page-container {
+                padding: 30px 15px;
+            }
+            .gallery-page-container h2 {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+                margin-bottom: 30px;
+            }
+            .section-block {
+                padding: 30px 20px;
+                margin-bottom: 30px;
+            }
+            .section-block h3 {
+                font-size: clamp(1.6rem, 6vw, 2.2rem);
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr; /* Single column on mobile */
+                gap: 20px;
+            }
+            .gallery-item img,
+            .gallery-item video {
+                height: 180px; /* Adjust height for smaller screens */
+            }
+            .gallery-item-info {
+                padding: 10px;
+            }
+            .gallery-item-info h4 {
+                font-size: clamp(1rem, 4.5vw, 1.2rem);
+            }
+            .gallery-item-info p {
+                font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+            }
+            .content-box1 {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                text-align: center;
+            }
+            .content-box1 .c-box-1, .c-box-2, .c-box-3, .c-box-4 {
+                align-items: center;
+            }
+            .content-box2 {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .content-box2 .add-info {
+                align-items: center;
+                text-align: center;
+            }
+            .socials {
+                justify-content: center;
+                margin-top: 20px;
+            }
+        }
+
+        /* Scroll to Top Button Styles */
+        .scroll-to-top-btn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position */
+            bottom: 30px; /* 30px from the bottom */
+            right: 30px; /* 30px from the right */
+            z-index: 99; /* Ensure it's above other content */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: #DC143C; /* Red background (consistent with your theme) */
+            color: white; /* White text/icon */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 50%; /* Make it circular */
+            font-size: 1.5em; /* Icon size */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.5s ease; /* Smooth transitions */
+            opacity: 0; /* Start fully transparent */
+        }
+
+        .scroll-to-top-btn:hover {
+            background-color: #B20C2D; /* Darker red on hover */
+            transform: translateY(-3px); /* Slight lift on hover */
+        }
+
+        /* Class to make the button visible */
+        .scroll-to-top-btn.show {
+            display: block;
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-to-top-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="w-full fixed top-0 z-50 bg-[#0A1128] text-white shadow-md">
+    <div class="flex justify-between items-center px-6 py-4">
+        <button class="focus:outline-none flex items-center gap-2 text-lg font-semibold" id="menuToggle">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="hidden md:inline">Menu</span>
+        </button>
+        <h2 class="desktop-navbar-text hidden lg:block">AMERICAN NATIONAL COLLEGE</h2>
+        <h1 class="text-xl font-bold uppercase tracking-wider md:block">STEM Society</h1>
+
+        <img alt="Logo" class="h-10 w-auto" src="Asserts/STEM Logo 1.4.png"/>
+    </div>
+</header>
+
+<div class="fixed top-0 left-0 w-full h-full bg-[#0A1128] text-white z-50 transition-slide overlay-closed overflow-hidden pt-16" id="menuOverlay">
+    <div class="relative flex flex-col h-full">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-white/20 z-10 relative">
+            <button class="flex items-center gap-2 text-lg font-semibold" id="closeMenu">
+                <span class="text-2xl">✕</span> Close
+            </button>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold">Search</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-24 right-6 z-0 opacity-10">
+            <img alt="Seal Logo" class="w-48 md:w-64 h-auto" src="Asserts/STEM Logo 1.4.png"/>
+        </div>
+
+        <div class="flex flex-col md:flex-row flex-grow px-6 py-4 gap-8 relative z-10 overflow-y-auto">
+            <div class="w-full md:w-1/3 border-r border-white/20">
+                <ul class="space-y-3 font-bold text-lg uppercase">
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="index3.html">Home</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="aboutus.html">About us</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="team.html">Administration</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="event.html">Events</a></li>
+                    <li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="project.html">Projects</a></li>
+                    <li class="bg-white bg-opacity-20 p-3 rounded cursor-pointer"><a class="menu-link" href="gallery.html">Gallery</a></li>
+                </ul>
+            </div>
+            <div class="w-full md:w-2/3 mt-4 md:mt-0 space-y-4 text-lg">
+                <p><a class="menu-link" href="blogandarticles.html">Articles</a></p>
+                <p><a class="menu-link" href="achievements.html">Achievements</a></p>
+                <p><a class="menu-link" href="festival.html">National Stem Festival</a></p>
+                <p><a class="menu-link" href="contact.html">Contact</a></p>
+                <p><a class="menu-link" href="donate.html">Donate</a></p>
+            </div>
+        </div>
+
+        <div class="socials flex justify-end items-center gap-6 text-2xl px-6 py-4 border-t border-white/20 z-10 relative">
+            <div class="button-panel flex gap-6">
+                <a class="fa fa-facebook hover:text-gray-300" href="#" title="Facebook"></a>
+                <a class="fa fa-youtube hover:text-gray-300" href="#" title="YouTube"></a>
+                <a class="fa fa-instagram hover:text-gray-300" href="#" title="Instagram"></a>
+                <a class="fa fa-twitter hover:text-gray-300" href="#" title="Twitter"></a>
+                <a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main>
+<section class="gallery-page-container">
+<h2>Our Gallery</h2>
+<p class="text-center text-lg text-gray-400 mb-10">A visual journey through our events, workshops, and innovative projects. Witness the STEM Society in action!</p>
+
+<div class="section-block">
+<h3>Event Photos</h3>
+<p class="text-gray-400 mb-8">Capturing the excitement and engagement from our major events and gatherings.</p>
+<div class="gallery-grid">
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/0D1B2A/FFFFFF?text=Event+1" alt="Annual Summit Keynote">
+        <div class="gallery-item-info">
+            <h4>Annual STEM Summit 2024</h4>
+            <p>Keynote speech by Dr. Anya Sharma.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Event+2" alt="Robotics Challenge">
+        <div class="gallery-item-info">
+            <h4>Robotics Challenge Finals</h4>
+            <p>Intense moments from the final round.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/415A77/FFFFFF?text=Event+3" alt="Science Fair">
+        <div class="gallery-item-info">
+            <h4>Community Science Fair</h4>
+            <p>Young innovators presenting their projects.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/778DA9/FFFFFF?text=Event+4" alt="Networking Session">
+        <div class="gallery-item-info">
+            <h4>Industry Networking Mixer</h4>
+            <p>Students connecting with professionals.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>Workshop Snaps</h3>
+<p class="text-gray-400 mb-8">Glimpses into our hands-on workshops and practical learning sessions.</p>
+<div class="gallery-grid">
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Workshop+1" alt="Coding Workshop">
+        <div class="gallery-item-info">
+            <h4>Python Coding Fundamentals</h4>
+            <p>Participants engaged in coding exercises.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/415A77/FFFFFF?text=Workshop+2" alt="Bioinformatics Lab">
+        <div class="gallery-item-info">
+            <h4>Bioinformatics Lab Session</h4>
+            <p>Analyzing genetic data in the lab.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/0D1B2A/FFFFFF?text=Workshop+3" alt="3D Printing">
+        <div class="gallery-item-info">
+            <h4>3D Printing Design Workshop</h4>
+            <p>Designing and printing prototypes.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/778DA9/FFFFFF?text=Workshop+4" alt="Circuit Building">
+        <div class="gallery-item-info">
+            <h4>Electronics Circuit Building</h4>
+            <p>Hands-on session with circuit boards.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>Project Demos</h3>
+<p class="text-gray-400 mb-8">Visual showcases of our members' innovative projects and their practical applications.</p>
+<div class="gallery-grid">
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/415A77/FFFFFF?text=Project+Demo+1" alt="Smart Home Demo">
+        <div class="gallery-item-info">
+            <h4>Smart Home Automation Demo</h4>
+            <p>Showcasing an integrated smart home system.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/0D1B2A/FFFFFF?text=Project+Demo+2" alt="AI Robot">
+        <div class="gallery-item-info">
+            <h4>AI-Powered Companion Robot</h4>
+            <p>Demonstration of human-robot interaction.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Project+Demo+3" alt="VR Experience">
+        <div class="gallery-item-info">
+            <h4>Virtual Reality Learning Experience</h4>
+            <p>Immersive VR for scientific visualization.</p>
+        </div>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/778DA9/FFFFFF?text=Project+Demo+4" alt="Green Energy">
+        <div class="gallery-item-info">
+            <h4>Miniature Wind Turbine Model</h4>
+            <p>Demonstrating renewable energy generation.</p>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>Video Highlights</h3>
+<p class="text-gray-400 mb-8">Watch our event recaps, project walkthroughs, and interviews with STEM leaders.</p>
+<div class="gallery-grid">
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/0D1B2A/FFFFFF?text=Video+1+Thumbnail" alt="Event Recap Video">
+        <div class="video-overlay">
+            <i class="fas fa-play-circle"></i>
+        </div>
+        <div class="gallery-item-info">
+            <h4>Annual Summit 2024 Recap</h4>
+            <p>Highlights from our biggest event of the year.</p>
+        </div>
+        <a href="https://www.youtube.com/embed/your-video-id-1" target="_blank" class="absolute inset-0 z-20"></a>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Video+2+Thumbnail" alt="Project Walkthrough Video">
+        <div class="video-overlay">
+            <i class="fas fa-play-circle"></i>
+        </div>
+        <div class="gallery-item-info">
+            <h4>Smart City Project Walkthrough</h4>
+            <p>A detailed look at our featured initiative.</p>
+        </div>
+        <a href="https://www.youtube.com/embed/your-video-id-2" target="_blank" class="absolute inset-0 z-20"></a>
+    </div>
+    <div class="gallery-item">
+        <img src="https://placehold.co/600x400/415A77/FFFFFF?text=Video+3+Thumbnail" alt="Interview Video">
+        <div class="video-overlay">
+            <i class="fas fa-play-circle"></i>
+        </div>
+        <div class="gallery-item-info">
+            <h4>Interview with Dr. Emily Lee</h4>
+            <p>Insights from our Bioinformatics Coordinator.</p>
+        </div>
+        <a href="https://www.youtube.com/embed/your-video-id-3" target="_blank" class="absolute inset-0 z-20"></a>
+    </div>
+</div>
+</div>
+
+</section>
+</main>
+
+<footer>
+    <div class="ftr-box">
+        <div class="content-box1">
+            <div class="c-box-1">
+                <p class="c-heading">OUR PORTFOLIO</p>
+                <a href="aboutus.html"><p>About Us</p></a>
+                <a href="team.html"><p>Administration</p></a>
+                <a href="event.html"><p>Events</p></a>
+                <a href="project.html"><p>Projects</p></a>
+            </div>
+            <div class="c-box-2">
+                <p class="c-heading">LEARN ABOUT US</p>
+                <a href="blogandarticles.html"><p>Blog / Articles</p></a>
+                <a href="gallery.html"><p>Gallery</p></a>
+                <a href="achievements.html"><p>Achievements</p></a>
+            </div>
+            <div class="c-box-3">
+                <p class="c-heading">JOIN THE JOURNEY</p>
+                <a href="contact.html"><p>Join Us</p></a>
+                <a href="contact.html"><p>Contact</p></a>
+                <a href="contact.html"><p>Sign Up</p></a>
+            </div>
+            <div class="c-box-4">
+                <p class="c-heading">GIVE</p>
+                <a href="donate.html"><p>Donate</p></a>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="content-box2">
+            <div class="add-info">
+                <div class="logo">
+                    <img class="ftr-logo" src="Asserts/STEM Logo 1.4.png" alt="STEM Society logo" />
+                </div>
+                <div class="logo-tagline">
+                    <p>Empowering Future Innovators</p>
+                    <p>One Project at a Time</p>
+                </div>
+                <div class="add-links">
+                    <p style="padding-top: 20px;">
+                        <a href="#">Account Center</a> •
+                        <a href="contact.html">Contact Us</a> •
+                        <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+                <div class="tiny-text">
+                    <p>© 2025 STEM Society. All rights reserved.</p>
+                </div>
+            </div>
+
+            <div class="socials">
+                <div class="button-panel">
+                    <a class="fa fa-facebook" href="#" title="Facebook"></a>
+                    <a class="fa fa-youtube" href="#" title="YouTube"></a>
+                    <a class="fa fa-instagram" href="#" title="Instagram"></a>
+                    <a class="fa fa-twitter" href="#" title="Twitter"></a>
+                    <a class="fa fa-linkedin" href="#" title="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<button id="scrollToTopBtn" class="scroll-to-top-btn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Navbar functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const closeMenu = document.getElementById('closeMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        if (menuToggle && closeMenu && menuOverlay) {
+            menuToggle.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-closed');
+                menuOverlay.classList.add('overlay-open');
+            });
+
+            closeMenu.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-open');
+                menuOverlay.classList.add('overlay-closed');
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuOverlay.classList.remove('overlay-open');
+                    menuOverlay.classList.add('overlay-closed');
+                }
+            });
+        }
+
+        // Scroll to Top Button Functionality
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        };
+
+        // When the user clicks on the button, scroll to the top of the document
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll animation
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

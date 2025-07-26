@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Blog & Articles - STEM Society</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&amp;family=Playfair+Display:wght@400;700&amp;family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<link href="styles1.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<style>
+    /* General Body and Font Styles */
+    body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+        background-color: #0A1128; /* Dark Blue - Main Theme (Consistent) */
+        color: #FFFFFF; /* White for general text */
+        line-height: 1.6;
+    }
+
+    /* Navbar and Overlay Styles */
+    header {
+        background-color: #0A1128; /* Dark Blue Navbar background */
+    }
+    #menuOverlay {
+        background-color: #0A1128; /* Dark Blue Overlay background */
+    }
+    .transition-slide {
+        transition: transform 0.5s ease-in-out;
+    }
+    .overlay-closed {
+        transform: translateX(100%);
+    }
+    .overlay-open {
+        transform: translateX(0);
+    }
+    .desktop-navbar-text {
+        display: none;
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+        font-weight: 600;
+        color: #FFFFFF;
+        margin-left: 20px;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        flex-grow: 1;
+        text-align: center;
+    }
+    @media (min-width: 1024px) {
+        .desktop-navbar-text {
+            display: block;
+        }
+    }
+
+    /* Styles for menu links inside the overlay */
+    .menu-link {
+        text-decoration: none;
+        color: inherit; /* Inherit color from parent li/p */
+        transition: color 0.3s ease; /* Smooth transition for hover effect */
+        display: block; /* Make the anchor fill the li/p for better click area */
+        padding: inherit; /* Inherit padding from parent li/p for consistent hit area */
+    }
+
+    .menu-link:hover {
+        color: #DC143C; /* Red on hover (Consistent) */
+    }
+
+    /* Main content padding to account for fixed header */
+    main {
+        padding-top: 80px; /* Adjust based on your header height */
+    }
+
+    /* Blog Page Specific Styles */
+    .blog-page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .blog-page-container h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        color: #FFFFFF; /* White heading (Consistent) */
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .blog-page-container h2::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background-color: #DC143C; /* Red accent underline (Consistent) */
+        border-radius: 2px;
+    }
+
+    .section-block {
+        background: rgba(27, 38, 59, 0.8); /* Darker blue, subtle transparency (Consistent) */
+        padding: 40px;
+        border-radius: 10px;
+        margin-bottom: 40px;
+        text-align: left;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .section-block:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .section-block h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        color: #DC143C; /* Red for subheadings (Consistent) */
+        margin-bottom: 15px;
+        text-align: center;
+        position: relative;
+        padding-bottom: 10px;
+    }
+    .section-block h3::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background-color: #B20C2D; /* Darker red (Consistent) */
+        border-radius: 1.5px;
+    }
+
+    /* Article Cards */
+    .article-card {
+        background: rgba(27, 38, 59, 0.9);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+    .article-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+    .article-card img {
+        width: 100%;
+        height: 200px; /* Fixed height for consistency */
+        object-fit: cover;
+        display: block;
+        filter: brightness(0.8);
+        transition: filter 0.3s ease;
+    }
+    .article-card:hover img {
+        filter: brightness(1);
+    }
+    .article-card-info {
+        padding: 20px;
+        flex-grow: 1; /* Allows info section to take available space */
+        display: flex;
+        flex-direction: column;
+    }
+    .article-card-info h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(1.3rem, 2vw, 1.7rem);
+        color: #FFFFFF; /* White (Consistent) */
+        margin-bottom: 10px;
+    }
+    .article-card-info p {
+        font-size: clamp(0.85rem, 1.4vw, 1rem);
+        color: #E0E0E0; /* Slightly off-white (Consistent) */
+        margin-bottom: 15px;
+        flex-grow: 1; /* Allows description to take space */
+    }
+    .article-card-info .article-meta {
+        font-size: 0.8rem;
+        color: #DC143C; /* Red (Consistent) */
+        margin-top: 10px;
+    }
+    .article-card-info .read-more-button {
+        display: inline-block;
+        background: #DC143C; /* Red (Consistent) */
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        align-self: flex-start; /* Align button to start within flex column */
+        margin-top: 15px;
+    }
+    .article-card-info .read-more-button:hover {
+        background: #B20C2D; /* Darker red (Consistent) */
+        transform: translateY(-2px);
+    }
+
+    /* STEM of the Month */
+    .stem-of-month {
+        background: linear-gradient(to right, rgba(220, 20, 60, 0.1), rgba(27, 38, 59, 0.9)); /* Subtle gradient using red accent */
+        border: 2px solid #DC143C; /* Red accent border */
+        border-radius: 15px;
+        padding: 50px;
+        margin-bottom: 60px;
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+    }
+    .stem-of-month::before {
+        content: 'STEM OF THE MONTH';
+        position: absolute;
+        top: 20px;
+        left: -20px;
+        background-color: #DC143C; /* Red accent */
+        color: white;
+        padding: 5px 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transform: rotate(-45deg);
+        transform-origin: 0% 0%;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    .stem-of-month-image {
+        flex-shrink: 0;
+        width: 300px;
+        height: 200px;
+        border-radius: 8px;
+        object-fit: cover;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        filter: brightness(0.9);
+        transition: filter 0.3s ease;
+    }
+    .stem-of-month:hover .stem-of-month-image {
+        filter: brightness(1);
+    }
+    .stem-of-month-details {
+        flex-grow: 1;
+    }
+    .stem-of-month-details h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        color: #FFFFFF; /* White (Consistent) */
+        margin-bottom: 15px;
+        text-align: left; /* Override section-block h3 center */
+        padding-bottom: 0;
+    }
+    .stem-of-month-details h3::after {
+        display: none; /* Remove underline for featured heading */
+    }
+    .stem-of-month-details p {
+        font-size: clamp(1rem, 1.8vw, 1.2rem);
+        color: #E0E0E0; /* Slightly off-white (Consistent) */
+        margin-bottom: 20px;
+    }
+    .stem-of-month-details .read-more-button {
+        display: inline-block;
+        background: #DC143C; /* Red (Consistent) */
+        color: white;
+        padding: 12px 25px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .stem-of-month-details .read-more-button:hover {
+        background: #B20C2D; /* Darker red (Consistent) */
+        transform: translateY(-2px);
+    }
+
+    /* Newsletter Archive */
+    .newsletter-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    .newsletter-item {
+        background: rgba(27, 38, 59, 0.9);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+    }
+    .newsletter-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    }
+    .newsletter-item h4 {
+        font-family: 'Merriweather', serif;
+        font-size: 1.2rem;
+        color: #FFFFFF; /* White (Consistent) */
+        margin-bottom: 10px;
+    }
+    .newsletter-item p {
+        font-size: 0.9rem;
+        color: #E0E0E0; /* Slightly off-white (Consistent) */
+        margin-bottom: 15px;
+    }
+    .newsletter-item .view-button {
+        display: inline-block;
+        background: #DC143C; /* Red (Consistent) */
+        color: white;
+        padding: 8px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .newsletter-item .view-button:hover {
+        background: #B20C2D; /* Darker red (Consistent) */
+        transform: translateY(-2px);
+    }
+
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+        .blog-page-container {
+            padding: 30px 15px;
+        }
+        .blog-page-container h2 {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            margin-bottom: 30px;
+        }
+        .section-block {
+            padding: 30px 20px;
+            margin-bottom: 30px;
+        }
+        .section-block h3 {
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+        }
+
+        /* Article Cards Grid */
+        .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 20px;
+        }
+        .article-card img {
+            height: 180px; /* Slightly smaller image height on mobile */
+        }
+        .article-card-info {
+            padding: 15px;
+        }
+        .article-card-info h4 {
+            font-size: clamp(1.1rem, 5vw, 1.4rem);
+        }
+        .article-card-info p {
+            font-size: clamp(0.8rem, 4vw, 0.95rem);
+        }
+        .article-card-info .read-more-button {
+            padding: 6px 12px;
+            font-size: 0.9rem;
+        }
+
+        /* STEM of the Month Mobile */
+        .stem-of-month {
+            flex-direction: column; /* Stack image and text vertically */
+            padding: 30px 20px;
+            gap: 20px;
+            text-align: center;
+        }
+        .stem-of-month::before {
+            top: 10px;
+            left: -30px;
+            font-size: 0.8rem;
+            padding: 3px 15px;
+        }
+        .stem-of-month-image {
+            width: 100%; /* Full width image */
+            height: 180px; /* Fixed height */
+        }
+        .stem-of-month-details h3 {
+            text-align: center; /* Center heading on mobile */
+            font-size: clamp(1.8rem, 7vw, 2.5rem);
+        }
+        .stem-of-month-details p {
+            font-size: clamp(0.9rem, 4vw, 1.1rem);
+        }
+
+        /* Newsletter Archive Mobile */
+        .newsletter-list {
+            grid-template-columns: 1fr; /* Single column on mobile */
+            gap: 15px;
+        }
+        .newsletter-item {
+            padding: 15px;
+        }
+    }
+
+    /* CSS for menu overlay transitions, previously in index.html <style> */
+    .transition-slide {
+        transition: transform 0.5s ease-in-out;
+        transform: translateX(100%); /* Start off-screen to the right */
+    }
+
+    .overlay-open {
+        transform: translateX(0); /* Slide in to full view */
+    }
+
+    .overlay-closed {
+        transform: translateX(100%); /* Slide out to the right */
+    }
+
+    /* Footer Styles (Copied from Achievements Page) */
+    .footer {
+        background-color: #0A1128; /* Dark blue background */
+        color: #E0E0E0; /* Light gray text */
+        font-family: 'Inter', sans-serif;
+        padding: 40px 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .footer-content {
+        max-width: 1200px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        padding-bottom: 30px;
+        text-align: left;
+    }
+    .footer-section h3 {
+        font-weight: 700;
+        font-size: 1.1em;
+        color: #FFFFFF;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-family: 'Playfair Display', serif; /* Consistent heading font */
+    }
+    .footer-section p {
+        margin: 0;
+        font-size: 0.95em;
+        line-height: 1.4;
+    }
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    .footer-section ul li {
+        margin-bottom: 8px;
+    }
+    .footer-section ul li a {
+        text-decoration: none;
+        color: #E0E0E0;
+        display: block;
+        transition: color 0.3s ease;
+    }
+    .footer-section ul li a:hover {
+        color: #DC143C; /* Red on hover */
+    }
+    .footer .socials {
+        margin-top: 15px;
+        display: flex;
+        gap: 15px;
+    }
+    .footer .socials .fa {
+        color: #FFFFFF;
+        font-size: 1.8em;
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
+    .footer .socials .fa:hover {
+        color: #DC143C; /* Red on hover */
+        transform: translateY(-3px);
+    }
+    .footer .text-center {
+        width: 100%;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 20px;
+    }
+
+    /* Responsive adjustments for footer */
+    @media (max-width: 768px) {
+        .footer-content {
+            grid-template-columns: 1fr; /* Stack columns on mobile */
+            text-align: center;
+        }
+        .footer-section {
+            align-items: center; /* Center content in sections */
+        }
+        .footer-section h3 {
+            text-align: center;
+        }
+        .footer-section ul li a {
+            text-align: center;
+        }
+        .footer .socials {
+            justify-content: center;
+        }
+    }
+
+    /* Scroll to Top Button Styles */
+    .scroll-to-top-btn {
+        display: none; /* Hidden by default */
+        position: fixed; /* Fixed position */
+        bottom: 30px; /* 30px from the bottom */
+        right: 30px; /* 30px from the right */
+        z-index: 99; /* Ensure it's above other content */
+        border: none; /* Remove borders */
+        outline: none; /* Remove outline */
+        background-color: #DC143C; /* Red background (consistent with your theme) */
+        color: white; /* White text/icon */
+        cursor: pointer; /* Add a mouse pointer on hover */
+        padding: 15px; /* Some padding */
+        border-radius: 50%; /* Make it circular */
+        font-size: 1.5em; /* Icon size */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.5s ease; /* Smooth transitions */
+        opacity: 0; /* Start fully transparent */
+    }
+
+    .scroll-to-top-btn:hover {
+        background-color: #B20C2D; /* Darker red on hover */
+        transform: translateY(-3px); /* Slight lift on hover */
+    }
+
+    /* Class to make the button visible */
+    .scroll-to-top-btn.show {
+        display: block;
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+        .scroll-to-top-btn {
+            bottom: 20px;
+            right: 20px;
+            padding: 12px;
+            font-size: 1.2em;
+        }
+    }
+</style>
+</link></head>
+<body>
+<header class="w-full fixed top-0 z-50 bg-[#0A1128] text-white shadow-md">
+    <div class="flex justify-between items-center px-6 py-4">
+        <button class="focus:outline-none flex items-center gap-2 text-lg font-semibold" id="menuToggle">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="hidden md:inline">Menu</span>
+        </button>
+        <h2 class="desktop-navbar-text hidden lg:block">AMERICAN NATIONAL COLLEGE</h2>
+        <h1 class="text-xl font-bold uppercase tracking-wider md:block">STEM Society</h1>
+
+        <img alt="Logo" class="h-10 w-auto" src="Asserts/STEM Logo 1.4.png"/>
+    </div>
+</header>
+<div class="fixed top-0 left-0 w-full h-full bg-[#0A1128] text-white z-50 transition-slide overlay-closed overflow-hidden pt-16" id="menuOverlay">
+<div class="relative flex flex-col h-full">
+<div class="flex justify-between items-center px-6 py-4 border-b border-white/20 z-10 relative">
+<button class="flex items-center gap-2 text-lg font-semibold" id="closeMenu">
+<span class="text-2xl">✕</span> Close
+</button>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="font-semibold">Search</span>
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+</div>
+<div class="absolute bottom-24 right-6 z-0 opacity-10">
+<img alt="Seal Logo" class="w-48 md:w-64 h-auto" src="Asserts/STEM Logo 1.4.png"/>
+</div>
+<div class="flex flex-col md:flex-row flex-grow px-6 py-4 gap-8 relative z-10 overflow-y-auto">
+<div class="w-full md:w-1/3 border-r border-white/20">
+<ul class="space-y-3 font-bold text-lg uppercase">
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="index3.html">Home</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="aboutus.html">About us</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="team.html">Administration</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="event.html">Events</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="project.html">Projects</a></li>
+<li class="bg-white bg-opacity-20 p-3 rounded"><a class="menu-link" href="blogandarticles.html">Blog / Articles</a></li>
+<li class="hover:bg-white hover:bg-opacity-10 p-3 rounded cursor-pointer"><a class="menu-link" href="gallery.html">Gallery</a></li>
+</ul>
+</div>
+<div class="w-full md:w-2/3 mt-4 md:mt-0 space-y-4 text-lg">
+<p><a class="menu-link" href="achievements.html">Achievements</a></p>
+<p><a class="menu-link" href="festival.html">National Stem Festival</a></p>
+<p><a class="menu-link" href="contact.html">Contact</a></p>
+<p><a class="menu-link" href="donate.html">Donate</a></p>
+</div>
+</div>
+<div class="socials flex justify-end items-center gap-6 text-2xl px-6 py-4 border-t border-white/20 z-10 relative">
+<div class="button-panel flex gap-6">
+<a class="fa fa-facebook hover:text-gray-300" href="#" title="Facebook"></a>
+<a class="fa fa-youtube hover:text-gray-300" href="#" title="YouTube"></a>
+<a class="fa fa-instagram hover:text-gray-300" href="#" title="Instagram"></a>
+<a class="fa fa-twitter hover:text-gray-300" href="#" title="Twitter"></a>
+<a class="fa fa-linkedin hover:text-gray-300" href="#" title="LinkedIn"></a>
+</div>
+</div>
+</div>
+</div>
+
+<main>
+<section class="blog-page-container">
+<h2>Our Blog & Articles</h2>
+<p class="text-center text-lg text-gray-400 mb-10">Dive into the latest STEM news, insightful opinion pieces, and inspiring stories from our community.</p>
+
+<div class="stem-of-month">
+    <img src="https://placehold.co/600x400/DC143C/FFFFFF?text=STEM+of+the+Month" alt="STEM of the Month: AI in Healthcare" class="stem-of-month-image">
+    <div class="stem-of-month-details">
+        <h3>STEM of the Month: AI in Healthcare</h3>
+        <p>This month's feature explores the revolutionary impact of Artificial Intelligence on modern healthcare. From diagnostic tools to personalized treatment plans, discover how AI is transforming medicine and improving patient outcomes globally.</p>
+        <a href="#" class="read-more-button">Read Full Article</a>
+    </div>
+</div>
+
+<div class="section-block">
+<h3>Latest Articles & News</h3>
+<p class="text-gray-400 mb-8">Stay updated with the latest advancements, discoveries, and news from the world of Science, Technology, Engineering, and Mathematics.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+    <div class="article-card">
+        <img src="https://placehold.co/600x400/0A1128/FFFFFF?text=Quantum+Leap" alt="Quantum Computing Breakthrough">
+        <div class="article-card-info">
+            <h4>Quantum Computing's Next Leap</h4>
+            <p>A deep dive into the recent breakthroughs in quantum computing and their potential to revolutionize various industries.</p>
+            <p class="article-meta">By Jane Doe | July 10, 2025</p>
+            <a href="#" class="read-more-button">Read More</a>
+        </div>
+    </div>
+    <div class="article-card">
+        <img src="https://placehold.co/600x400/0A1128/FFFFFF?text=Space+Tourism" alt="Future of Space Tourism">
+        <div class="article-card-info">
+            <h4>The Future of Space Tourism</h4>
+            <p>Exploring the engineering challenges and ethical considerations as space tourism becomes an increasingly viable reality.</p>
+            <p class="article-meta">By John Smith | July 5, 2025</p>
+            <a href="#" class="read-more-button">Read More</a>
+        </div>
+    </div>
+    <div class="article-card">
+        <img src="https://placehold.co/600x400/0A1128/FFFFFF?text=Renewable+Tech" alt="Renewable Energy Innovations">
+        <div class="article-card-info">
+            <h4>Innovations in Renewable Energy</h4>
+            <p>Highlighting the latest technologies and research pushing the boundaries of sustainable energy solutions worldwide.</p>
+            <p class="article-meta">By Emily White | June 28, 2025</p>
+            <a href="#" class="read-more-button">Read More</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>Opinion Pieces & Essays</h3>
+<p class="text-gray-400 mb-8">Thought-provoking essays and opinion pieces on the societal impact, ethical dilemmas, and future directions of STEM.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+    <div class="article-card">
+        <img src="https://placehold.co/600x400/0A1128/FFFFFF?text=AI+Ethics" alt="AI Ethics Debate">
+        <div class="article-card-info">
+            <h4>The Ethical Quandaries of AI Development</h4>
+            <p>An in-depth look at the moral and ethical challenges faced by developers and policymakers in the age of advanced AI.</p>
+            <p class="article-meta">By Dr. Alex Lee | July 12, 2025</p>
+            <a href="#" class="read-more-button">Read More</a>
+        </div>
+    </div>
+    <div class="article-card">
+        <img src="https://placehold.co/600x400/0A1128/FFFFFF?text=STEM+Education" alt="Future of STEM Education">
+        <div class="article-card-info">
+            <h4>Rethinking STEM Education for the 21st Century</h4>
+            <p>An essay on the need for adaptive and interdisciplinary approaches to STEM education to prepare future generations.</p>
+            <p class="article-meta">By Prof. Sarah Chen | June 30, 2025</p>
+            <a href="#" class="read-more-button">Read More</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="section-block">
+<h3>Newsletter Archive</h3>
+<p class="text-gray-400 mb-8">Access our past newsletters for a comprehensive overview of our activities, highlights, and community updates.</p>
+<ul class="newsletter-list">
+    <li class="newsletter-item">
+        <h4>STEM Society Newsletter - June 2025</h4>
+        <p>Highlights from our summer workshops and upcoming fall events.</p>
+        <a href="#" class="view-button">View Newsletter</a>
+    </li>
+    <li class="newsletter-item">
+        <h4>STEM Society Newsletter - May 2025</h4>
+        <p>Recap of the annual robotics competition and student achievements.</p>
+        <a href="#" class="view-button">View Newsletter</a>
+    </li>
+    <li class="newsletter-item">
+        <h4>STEM Society Newsletter - April 2025</h4>
+        <p>Special edition on Earth Day initiatives and sustainable projects.</p>
+        <a href="#" class="view-button">View Newsletter</a>
+    </li>
+    <li class="newsletter-item">
+        <h4>STEM Society Newsletter - March 2025</h4>
+        <p>Introducing our new faculty advisors and mentorship program updates.</p>
+        <a href="#" class="view-button">View Newsletter</a>
+    </li>
+</ul>
+</div>
+
+</section>
+</main>
+
+<footer class="footer">
+<div class="footer-content">
+<div class="footer-section">
+<h3>STEM Society</h3>
+<p>Fostering innovation and excellence in Science, Technology, Engineering, and Mathematics.</p>
+</div>
+<div class="footer-section">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="index3.html" class="hover:text-[#DC143C] transition-colors">Home</a></li>
+<li><a href="aboutus.html" class="hover:text-[#DC143C] transition-colors">About Us</a></li>
+<li><a href="event.html" class="hover:text-[#DC143C] transition-colors">Events</a></li>
+<li><a href="project.html" class="hover:text-[#DC143C] transition-colors">Projects</a></li>
+<li><a href="blogandarticles.html" class="hover:text-[#DC143C] transition-colors">Blog / Articles</a></li>
+<li><a href="achievements.html" class="hover:text-[#DC143C] transition-colors">Achievements</a></li>
+<li><a href="gallery.html" class="hover:text-[#DC143C] transition-colors">Gallery</a></li>
+</ul>
+</div>
+<div class="footer-section">
+<h3>Contact Us</h3>
+<p>Email: info@stemsociety.org</p>
+<p>Phone: +1 (123) 456-7890</p>
+<div class="socials mt-4 text-xl">
+<a class="fa fa-facebook hover:text-[#DC143C] mr-4" href="#" title="Facebook"></a>
+<a class="fa fa-youtube hover:text-[#DC143C] mr-4" href="#" title="YouTube"></a>
+<a class="fa fa-instagram hover:text-[#DC143C] mr-4" href="#" title="Instagram"></a>
+<a class="fa fa-twitter hover:text-[#DC143C] mr-4" href="#" title="Twitter"></a>
+<a class="fa fa-linkedin hover:text-[#DC143C]" href="#" title="LinkedIn"></a>
+</div>
+</div>
+</div>
+<div class="text-center mt-8 pt-8 border-t border-white/10">
+<p>&copy; 2025 STEM Society. All rights reserved.</p>
+</div>
+</footer>
+
+<button id="scrollToTopBtn" class="scroll-to-top-btn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Navbar functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const closeMenu = document.getElementById('closeMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        if (menuToggle && closeMenu && menuOverlay) {
+            menuToggle.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-closed');
+                menuOverlay.classList.add('overlay-open');
+            });
+
+            closeMenu.addEventListener('click', () => {
+                menuOverlay.classList.remove('overlay-open');
+                menuOverlay.classList.add('overlay-closed');
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    menuOverlay.classList.remove('overlay-open');
+                    menuOverlay.classList.add('overlay-closed');
+                }
+            });
+        }
+
+        // Scroll to Top Button Functionality
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        };
+
+        // When the user clicks on the button, scroll to the top of the document
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // Smooth scroll animation
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
