@@ -1268,6 +1268,93 @@
         font-size: 1.2em;
     }
 }
+.carousel-container {
+  padding: 30px 15px;
+  text-align: center;
+  background-color: #0b0e23;
+}
+
+.carousel-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+  font-family: 'Merriweather', serif;
+  letter-spacing: 0.8px;
+}
+
+.carousel {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px 5px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-card {
+  flex: 0 0 auto;
+  width: 200px;
+  background-color: #14162e;
+  border-radius: 8px;
+  overflow: hidden;
+  scroll-snap-align: start;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease;
+}
+
+.carousel-card:hover {
+  transform: scale(1.02);
+}
+
+.carousel-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.carousel-caption {
+  padding: 12px;
+}
+
+.carousel-caption h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.carousel-caption .role {
+  font-size: 0.7rem;
+  color: #c2c2c2;
+  text-transform: uppercase;
+  margin-top: 5px;
+  letter-spacing: 0.3px;
+}
+
+/* Responsive for very small screens */
+@media (max-width: 480px) {
+  .carousel-title {
+    font-size: 1.4rem;
+  }
+
+  .carousel-card {
+    width: 160px;
+  }
+
+  .carousel-caption h3 {
+    font-size: 0.95rem;
+  }
+
+  .carousel-caption .role {
+    font-size: 0.65rem;
+  }
+}
 
     </style>
 </link></head>
@@ -1363,35 +1450,40 @@
     </div>
 </section>
 
-<section class="section-container team-section">
-    <h2>Meet Our Team</h2>
-    <div class="team-grid">
-        <div class="team-member-card">
-            <img src="https://placehold.co/120x120/DC143C/FFFFFF?text=Member1" alt="Team Member 1">
-            <h3>MUDHALVAN</h3>
-            <p>President</p>
-            <p>Passionate about fostering STEM education and community growth.</p>
-        </div>
-        <div class="team-member-card">
-            <img src="https://placehold.co/120x120/DC143C/FFFFFF?text=Member2" alt="Team Member 2">
-            <h3>ABISHEK</h3>
-            <p>Vice President</p>
-            <p>Specializes in robotics and project management.</p>
-        </div>
-        <div class="team-member-card">
-            <img src="https://placehold.co/120x120/DC143C/FFFFFF?text=Member3" alt="Team Member 3">
-            <h3>Peter Parker</h3>
-            <p>Events Coordinator</p>
-            <p>Organizes engaging workshops and annual STEM festivals.</p>
-        </div>
-        <div class="team-member-card">
-            <img src="https://placehold.co/120x120/DC143C/FFFFFF?text=Member4" alt="Team Member 4">
-            <h3>Tony Stark</h3>
-            <p>Technical Lead</p>
-            <p>Expert in software development and AI applications.</p>
-        </div>
+<section class="carousel-container">
+  <h2 class="carousel-title">Meet Our Team</h2>
+  <div class="carousel">
+    <div class="carousel-card">
+      <img src="https://placehold.co/300x400/DC143C/FFFFFF?text=Member1" alt="Mudhalvan">
+      <div class="carousel-caption">
+        <h3>MUDHALVAN</h3>
+        <p class="role">PRESIDENT</p>
+      </div>
     </div>
+    <div class="carousel-card">
+      <img src="https://placehold.co/300x400/DC143C/FFFFFF?text=Member2" alt="Abishek">
+      <div class="carousel-caption">
+        <h3>ABISHEK</h3>
+        <p class="role">VICE PRESIDENT</p>
+      </div>
+    </div>
+    <div class="carousel-card">
+      <img src="https://placehold.co/300x400/DC143C/FFFFFF?text=Member3" alt="Peter Parker">
+      <div class="carousel-caption">
+        <h3>PETER PARKER</h3>
+        <p class="role">EVENTS COORDINATOR</p>
+      </div>
+    </div>
+    <div class="carousel-card">
+      <img src="https://placehold.co/300x400/DC143C/FFFFFF?text=Member4" alt="Tony Stark">
+      <div class="carousel-caption">
+        <h3>TONY STARK</h3>
+        <p class="role">TECHNICAL LEAD</p>
+      </div>
+    </div>
+  </div>
 </section>
+
 
 <section class="info-section">
     <div class="info-section-background" style="background-image: url('STEM pics/WDAC0590.JPG');"></div>
@@ -1565,18 +1657,17 @@
 
 <section class="section-container interactive-insights-section">
     <h2>Interactive STEM Insights</h2>
-    <p>Click on a button to get a quick insight powered by AI!</p>
+    <p>Click a button to get a quick insight!!</p>
     <div class="button-group">
-        <button class="insight-button" data-insight="What is AI?"><span>What is AI?</span><span class="spinner"></span></button>
-        <button class="insight-button" data-insight="How does a rocket work?"><span>How does a Rocket Work?</span><span class="spinner"></span></button>
-        <button class="insight-button" data-insight="Explain photosynthesis simply."><span>Explain Photosynthesis Simply</span><span class="spinner"></span></button>
-        <button class="insight-button" data-insight="What are renewable energy sources?"><span>Renewable Energy Sources</span><span class="spinner"></span></button>
+        <button class="insight-button" data-type="fact"><span>Give me a STEM Fact</span><span class="spinner"></span></button>
+        <button class="insight-button" data-type="quote"><span>Inspire me with a Quote</span><span class="spinner"></span></button>
     </div>
     <div class="llm-response-container" id="llmResponseContainer">
         <button class="close-btn" id="closeLlmResponse">&times;</button>
         <p id="llmResponseContent"></p>
     </div>
 </section>
+
 
 <footer>
     <div class="ftr-box">
@@ -1841,6 +1932,7 @@
             }
         });
     });
+    
 </script>
 </body>
 </html>
