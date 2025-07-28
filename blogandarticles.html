@@ -412,95 +412,117 @@
     }
 
     /* Footer Styles (Copied from Achievements Page) */
-    .footer {
-        background-color: #0A1128; /* Dark blue background */
-        color: #E0E0E0; /* Light gray text */
-        font-family: 'Inter', sans-serif;
-        padding: 40px 20px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .footer-content {
-        max-width: 1200px;
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 30px;
-        padding-bottom: 30px;
-        text-align: left;
-    }
-    .footer-section h3 {
-        font-weight: 700;
-        font-size: 1.1em;
-        color: #FFFFFF;
-        margin-bottom: 15px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-family: 'Playfair Display', serif; /* Consistent heading font */
-    }
-    .footer-section p {
-        margin: 0;
-        font-size: 0.95em;
-        line-height: 1.4;
-    }
-    .footer-section ul {
-        list-style: none;
-        padding: 0;
-    }
-    .footer-section ul li {
-        margin-bottom: 8px;
-    }
-    .footer-section ul li a {
-        text-decoration: none;
-        color: #E0E0E0;
-        display: block;
-        transition: color 0.3s ease;
-    }
-    .footer-section ul li a:hover {
-        color: #DC143C; /* Red on hover */
-    }
-    .footer .socials {
-        margin-top: 15px;
-        display: flex;
-        gap: 15px;
-    }
-    .footer .socials .fa {
-        color: #FFFFFF;
-        font-size: 1.8em;
-        transition: color 0.3s ease, transform 0.2s ease;
-    }
-    .footer .socials .fa:hover {
-        color: #DC143C; /* Red on hover */
-        transform: translateY(-3px);
-    }
-    .footer .text-center {
-        width: 100%;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        margin-top: 20px;
-    }
-
-    /* Responsive adjustments for footer */
-    @media (max-width: 768px) {
-        .footer-content {
-            grid-template-columns: 1fr; /* Stack columns on mobile */
-            text-align: center;
+    /* Footer Styles */
+        footer {
+            background-color: #0A1128; /* Dark blue background */
+            color: #E0E0E0; /* Light gray text */
+            font-family: 'Inter', sans-serif;
+            padding: 40px 20px;
+            box-sizing: border-box;
         }
-        .footer-section {
-            align-items: center; /* Center content in sections */
+        .ftr-box {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .footer-section h3 {
-            text-align: center;
+        .content-box1 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            padding-bottom: 30px;
         }
-        .footer-section ul li a {
-            text-align: center;
+        .content-box1 .c-heading {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .footer .socials {
-            justify-content: center;
+        .content-box1 a {
+            text-decoration: none;
+            color: #E0E0E0;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
         }
-    }
+        .content-box1 a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box1 a p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+        hr {
+            background-color: #3C4B6F; /* A lighter shade of blue for the separator */
+            border: none;
+            height: 1px;
+            margin: 30px 0;
+        }
+        .content-box2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            gap: 20px;
+        }
+        .content-box2 .add-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            flex-grow: 1;
+            min-width: 280px;
+        }
+        .content-box2 .logo img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .content-box2 .logo-tagline p {
+            font-size: 1em;
+            margin: 0;
+            line-height: 1.4;
+            color: #FFFFFF;
+        }
+        .content-box2 .add-links {
+            margin-top: 15px;
+        }
+        .content-box2 .add-links a {
+            color: #778DA9; /* Muted blue for additional links */
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+        .content-box2 .add-links a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box2 .tiny-text {
+            margin-top: 15px;
+        }
+        .content-box2 .tiny-text p {
+            font-size: 0.8em;
+            color: #A9B3C7;
+            margin: 0;
+        }
+        .socials {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .socials .button-panel {
+            display: flex;
+            gap: 15px;
+        }
+        .socials .fa {
+            color: #FFFFFF;
+            font-size: 1.8em;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .socials .fa:hover {
+            color: #DC143C; /* Red on hover */
+            transform: translateY(-3px);
+        }
 
     /* Scroll to Top Button Styles */
     .scroll-to-top-btn {
@@ -541,6 +563,116 @@
             font-size: 1.2em;
         }
     }
+    footer {
+            background-color: #0A1128; /* Dark blue background */
+            color: #E0E0E0; /* Light gray text */
+            font-family: 'Inter', sans-serif;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+        .ftr-box {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content-box1 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+        .content-box1 .c-heading {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .content-box1 a {
+            text-decoration: none;
+            color: #E0E0E0;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        .content-box1 a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box1 a p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+        hr {
+            background-color: #3C4B6F; /* A lighter shade of blue for the separator */
+            border: none;
+            height: 1px;
+            margin: 30px 0;
+        }
+        .content-box2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            gap: 20px;
+        }
+        .content-box2 .add-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            flex-grow: 1;
+            min-width: 280px;
+        }
+        .content-box2 .logo img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .content-box2 .logo-tagline p {
+            font-size: 1em;
+            margin: 0;
+            line-height: 1.4;
+            color: #FFFFFF;
+        }
+        .content-box2 .add-links {
+            margin-top: 15px;
+        }
+        .content-box2 .add-links a {
+            color: #778DA9; /* Muted blue for additional links */
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+        .content-box2 .add-links a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box2 .tiny-text {
+            margin-top: 15px;
+        }
+        .content-box2 .tiny-text p {
+            font-size: 0.8em;
+            color: #A9B3C7;
+            margin: 0;
+        }
+        .socials {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .socials .button-panel {
+            display: flex;
+            gap: 15px;
+        }
+        .socials .fa {
+            color: #FFFFFF;
+            font-size: 1.8em;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .socials .fa:hover {
+            color: #DC143C; /* Red on hover */
+            transform: translateY(-3px);
+        }
 </style>
 </link></head>
 <body>
@@ -710,40 +842,68 @@
 </section>
 </main>
 
-<footer class="footer">
-<div class="footer-content">
-<div class="footer-section">
-<h3>STEM Society</h3>
-<p>Fostering innovation and excellence in Science, Technology, Engineering, and Mathematics.</p>
-</div>
-<div class="footer-section">
-<h3>Quick Links</h3>
-<ul>
-<li><a href="index3.html" class="hover:text-[#DC143C] transition-colors">Home</a></li>
-<li><a href="aboutus.html" class="hover:text-[#DC143C] transition-colors">About Us</a></li>
-<li><a href="event.html" class="hover:text-[#DC143C] transition-colors">Events</a></li>
-<li><a href="project.html" class="hover:text-[#DC143C] transition-colors">Projects</a></li>
-<li><a href="blogandarticles.html" class="hover:text-[#DC143C] transition-colors">Blog / Articles</a></li>
-<li><a href="achievements.html" class="hover:text-[#DC143C] transition-colors">Achievements</a></li>
-<li><a href="gallery.html" class="hover:text-[#DC143C] transition-colors">Gallery</a></li>
-</ul>
-</div>
-<div class="footer-section">
-<h3>Contact Us</h3>
-<p>Email: info@stemsociety.org</p>
-<p>Phone: +1 (123) 456-7890</p>
-<div class="socials mt-4 text-xl">
-<a class="fa fa-facebook hover:text-[#DC143C] mr-4" href="#" title="Facebook"></a>
-<a class="fa fa-youtube hover:text-[#DC143C] mr-4" href="#" title="YouTube"></a>
-<a class="fa fa-instagram hover:text-[#DC143C] mr-4" href="#" title="Instagram"></a>
-<a class="fa fa-twitter hover:text-[#DC143C] mr-4" href="#" title="Twitter"></a>
-<a class="fa fa-linkedin hover:text-[#DC143C]" href="#" title="LinkedIn"></a>
-</div>
-</div>
-</div>
-<div class="text-center mt-8 pt-8 border-t border-white/10">
-<p>&copy; 2025 STEM Society. All rights reserved.</p>
-</div>
+<footer>
+    <div class="ftr-box">
+        <div class="content-box1">
+            <div class="c-box-1">
+                <p class="c-heading">OUR PORTFOLIO</p>
+                <a href="aboutus.html"><p>About Us</p></a>
+                <a href="team.html"><p>Administration</p></a>
+                <a href="event.html"><p>Events</p></a>
+                <a href="project.html"><p>Projects</p></a>
+            </div>
+            <div class="c-box-2">
+                <p class="c-heading">LEARN ABOUT US</p>
+                <a href="blogandarticles.html"><p>Blog / Articles</p></a>
+                <a href="gallery.html"><p>Gallery</p></a>
+                <a href="achievements.html"><p>Achievements</p></a>
+            </div>
+            <div class="c-box-3">
+                <p class="c-heading">JOIN THE JOURNEY</p>
+                <a href="contact.html"><p>Join Us</p></a>
+                <a href="contact.html"><p>Contact</p></a>
+                <a href="contact.html"><p>Sign Up</p></a>
+            </div>
+            <div class="c-box-4">
+                <p class="c-heading">GIVE</p>
+                <a href="donate.html"><p>Donate</p></a>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="content-box2">
+            <div class="add-info">
+                <div class="logo">
+                    <img class="ftr-logo" src="Asserts/STEM Logo 1.4.png" alt="STEM Society logo" />
+                </div>
+                <div class="logo-tagline">
+                    <p>Empowering Future Innovators</p>
+                    <p>One Project at a Time</p>
+                </div>
+                <div class="add-links">
+                    <p style="padding-top: 20px;">
+                        <a href="#">Account Center</a> •
+                        <a href="contact.html">Contact Us</a> •
+                        <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+                <div class="tiny-text">
+                    <p>© 2025 STEM Society. All rights reserved.</p>
+                </div>
+            </div>
+
+            <div class="socials">
+                <div class="button-panel">
+                    <a class="fa fa-facebook" href="#" title="Facebook"></a>
+                    <a class="fa fa-youtube" href="#" title="YouTube"></a>
+                    <a class="fa fa-instagram" href="#" title="Instagram"></a>
+                    <a class="fa fa-twitter" href="#" title="Twitter"></a>
+                    <a class="fa fa-linkedin" href="#" title="LinkedIn"></a>
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>
 
 <button id="scrollToTopBtn" class="scroll-to-top-btn" title="Go to top">

@@ -324,6 +324,116 @@
                 font-size: 1.2em;
             }
         }
+        footer {
+            background-color: #0A1128; /* Dark blue background */
+            color: #E0E0E0; /* Light gray text */
+            font-family: 'Inter', sans-serif;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+        .ftr-box {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content-box1 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+        .content-box1 .c-heading {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .content-box1 a {
+            text-decoration: none;
+            color: #E0E0E0;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+        .content-box1 a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box1 a p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+        hr {
+            background-color: #3C4B6F; /* A lighter shade of blue for the separator */
+            border: none;
+            height: 1px;
+            margin: 30px 0;
+        }
+        .content-box2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            gap: 20px;
+        }
+        .content-box2 .add-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            flex-grow: 1;
+            min-width: 280px;
+        }
+        .content-box2 .logo img {
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .content-box2 .logo-tagline p {
+            font-size: 1em;
+            margin: 0;
+            line-height: 1.4;
+            color: #FFFFFF;
+        }
+        .content-box2 .add-links {
+            margin-top: 15px;
+        }
+        .content-box2 .add-links a {
+            color: #778DA9; /* Muted blue for additional links */
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+        .content-box2 .add-links a:hover {
+            color: #DC143C; /* Red on hover */
+        }
+        .content-box2 .tiny-text {
+            margin-top: 15px;
+        }
+        .content-box2 .tiny-text p {
+            font-size: 0.8em;
+            color: #A9B3C7;
+            margin: 0;
+        }
+        .socials {
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .socials .button-panel {
+            display: flex;
+            gap: 15px;
+        }
+        .socials .fa {
+            color: #FFFFFF;
+            font-size: 1.8em;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .socials .fa:hover {
+            color: #DC143C; /* Red on hover */
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body>
@@ -531,30 +641,30 @@
         <div class="content-box1">
             <div class="c-box-1">
                 <p class="c-heading">OUR PORTFOLIO</p>
-                <a href="#"><p>About Us</p></a>
-                <a href="#"><p>Administration</p></a>
-                <a href="#"><p>Events</p></a>
-                <a href="#"><p>Projects</p></a>
+                <a href="aboutus.html"><p>About Us</p></a>
+                <a href="team.html"><p>Administration</p></a>
+                <a href="event.html"><p>Events</p></a>
+                <a href="project.html"><p>Projects</p></a>
             </div>
             <div class="c-box-2">
                 <p class="c-heading">LEARN ABOUT US</p>
-                <a href="#"><p>Blog / Articles</p></a>
-                <a href="#"><p>Gallery</p></a>
-                <a href="#"><p>Achievements</p></a>
+                <a href="blogandarticles.html"><p>Blog / Articles</p></a>
+                <a href="gallery.html"><p>Gallery</p></a>
+                <a href="achievements.html"><p>Achievements</p></a>
             </div>
             <div class="c-box-3">
                 <p class="c-heading">JOIN THE JOURNEY</p>
-                <a href="#"><p>Join Us</p></a>
-                <a href="#"><p>Contact</p></a>
-                <a href="#"><p>Sign Up</p></a>
+                <a href="contact.html"><p>Join Us</p></a>
+                <a href="contact.html"><p>Contact</p></a>
+                <a href="contact.html"><p>Sign Up</p></a>
             </div>
             <div class="c-box-4">
                 <p class="c-heading">GIVE</p>
-                <a href="#"><p>Donate</p></a>
+                <a href="donate.html"><p>Donate</p></a>
             </div>
         </div>
 
-        <hr style="background-color: white; border: none; height: 1px;" />
+        <hr />
 
         <div class="content-box2">
             <div class="add-info">
@@ -568,7 +678,7 @@
                 <div class="add-links">
                     <p style="padding-top: 20px;">
                         <a href="#">Account Center</a> •
-                        <a href="#">Contact Us</a> •
+                        <a href="contact.html">Contact Us</a> •
                         <a href="#">Privacy Policy</a>
                     </p>
                 </div>
